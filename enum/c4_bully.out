@@ -1,0 +1,56 @@
+Mplus VERSION 8.8
+MUTHEN & MUTHEN
+01/24/2023   3:13 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+  4-Class
+  DATA:
+  FILE = "C:/Users/Dina Arch/Box/IES_IMMERSE/Training Materials/run_lca_enumeration/enum/bul
+
+  VARIABLE:
+  NAMES = report_dis report_race report_sex counselors_fte psych_fte law_fte;
+   MISSING=.;
+   categorical = report_dis-law_fte;
+  usevar = report_dis-law_fte;
+  classes = c(4);
+  ANALYSIS:
+  estimator = mlr;
+      type = mixture;
+      stseed = 5212020;
+      starts = 200 100;
+      processors = 10;
+  OUTPUT:
+  sampstat residual tech11 tech14;
+  PLOT:
+  type = plot3;
+      series = report_dis-law_fte(*);
+
+*** WARNING
+  Input line exceeded 90 characters. Some input may be truncated.
+  FILE = "C:/Users/Dina Arch/Box/IES_IMMERSE/Training Materials/run_lca_enumeration/enum/bull
+*** WARNING in DATA command
+  Statement not terminated by a semicolon:
+  FILE = "C:/Users/Dina Arch/Box/IES_IMMERSE/Training Materials/run_lca_enumeration/enum/bull
+*** WARNING in DATA command
+  Mismatched quotation in FILE option.  A quotation mark will be assumed at
+  the end of the line.
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+*** ERROR in DATA command
+  The file specified for the FILE option cannot be found.  Check that this
+  file exists:  C:/Users/Dina Arch/Box/IES_IMMERSE/Training Materials/run_lca_enumeration/enum/bull
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2022 Muthen & Muthen
