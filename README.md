@@ -14,7 +14,7 @@
 
 # IMMERSE Project
 
-![](images/IESNewLogo.jpg)
+![](figures/IESNewLogo.jpg)
 
 The Institute of Mixture Modeling for Equity-Oriented Researchers, Scholars, and Educators (IMMERSE) is an IES funded training grant (R305B220021) to support Education scholars in integrating mixture modeling into their research.
 
@@ -25,8 +25,6 @@ The Institute of Mixture Modeling for Equity-Oriented Researchers, Scholars, and
 How to reference this walkthrough: *This work was supported by the IMMERSE Project* (IES - 305B220021)
 
 Visit our [GitHub](https://github.com/immerse-ucsb) account to download the materials needed for this walkthrough.
-
-------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
 
