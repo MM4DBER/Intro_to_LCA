@@ -1,7 +1,7 @@
 TITLE:
 3-Class
 DATA:
-FILE = "C:/Users/Dina Arch/Box/IES_IMMERSE/Training Materials/run_lca_enumeration/enum/bully.dat";
+FILE = "C:/Users/Dina Arch/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat";
  
 VARIABLE:
 NAMES = report_dis report_race report_sex counselors_fte psych_fte law_fte; 
@@ -12,7 +12,6 @@ classes = c(3);
 ANALYSIS:
 estimator = mlr; 
     type = mixture;
-    stseed = 5212020;
     starts = 200 100; 
     processors = 10;
 OUTPUT:

@@ -3,12 +3,12 @@ title: "Latent Class Analysis Enumeration"
 author: "IMMERSE Training Team"
 date: "Updated: `r format(Sys.time(), '%B %d, %Y')`"
 output:
+  pdf_document:
+    toc: yes
   html_document:
     toc: yes
     toc_float: yes
     theme: flatly
-  pdf_document:
-    toc: yes
 editor_options: 
   markdown: 
     wrap: sentence
@@ -46,9 +46,12 @@ Visit our [GitHub](https://github.com/immerse-ucsb) account to download the mate
 
 ------------------------------------------------------------------------
 
-# Introduction to R and RStudio
+## Example: Bullying in Schools 
 
-This walkthrough is presented by the IMMERSE team and will cover latent class enumeration steps and data visualizations.
+------------------------------------------------------------------------
+
+
+To demonstrate mixture modeling in the training program and online resource components of the IES grant we utilize the *Civil Rights Data Collection (CRDC)* (CRDC) data repository. The CRDC is a federally mandated school-level data collection effort that occurs every other year. This public data is currently available for selected latent class indicators across 4 years (2011, 2013, 2015, 2017) and all US states. In this example, we use the Arizona state sample. We utilize six focal indicators which constitute the latent class model in our example; three variables which report on harassment/bullying in schools based on disability, race, or sex, and three variables on full-time equivalent school staff hires (counselor, psychologist, law enforcement). This data source also includes covariates on a variety of subjects and distal outcomes reported in 2018 such as math/reading assessments and graduation rates. 
 
 ------------------------------------------------------------------------
 
@@ -60,61 +63,80 @@ library(tidyverse)
 library(haven)
 library(glue)
 library(MplusAutomation)
-library(rhdf5)
 library(here)
 library(janitor)
 library(gt)
-library(semPlot)
-library(reshape2)
 library(cowplot)
-library(filesstrings)
-library(hrbrthemes)nevermin
-library(poLCA)
-here::i_am("run_lca_enumeration.Rmd")
+library(DiagrammeR) 
+here::i_am("lca_enum.Rmd")
 ```
 
-------------------------------------------------------------------------
 
-## Example: Bullying in Schools 
-
-------------------------------------------------------------------------
-
-We are considering the use of the CRDC data repository as an ongoing example dataset which would be used to demonstrate mixture modeling in training program and online resource components of the IES grant. The Civil Rights Data Collection is a federally mandated school-level data collection effort that occurs every other year. This public data is currently available across 4 years (2011, 2013, 2015, 2017) and all US states. We are interested specifically in 6 variables which report on harassment/bullying in schools based on disability, race, or sex. We have only recently become aware of this data resource and are interested in the reputation of this data source and whether it is considered reliable among policy researchers. 
-
-
-"Dichotomous self-report responses by 319 undergraduates to four questions about cheating behavior" (poLCA, 2016).
-
-*Data source*: This example utilizes a dataset on undergraduate *Cheating* available from the `poLCA` package (Dayton, 1998): [See documentation here](https://cran.r-project.org/web/packages/poLCA/poLCA.pdf)
-
-------------------------------------------------------------------------
-
-```{r, echo=FALSE, eval=TRUE, out.width = "50%", out.height= "50%", fig.pos="h", fig.align='center'}
-
-knitr::include_graphics(here("figures", "LCA_Diagram0_SEMLAB8.png"))
-```
-
-------------------------------------------------------------------------
+### Variable Description
 
 ```{r, echo=FALSE, eval=TRUE}
-
 tribble(
    ~"Name",      ~"Label",  ~"Values",                                   
 #--------------|--------------------------------|-----|,
-  "report_dis",   "lied to avoid taking an exam"                   ,  "0 = No, 1 = Yes",
-  "report_race",  "lied to avoid handing a term paper in on time",  "0 = No, 1 = Yes",
-  "report_sex", "purchased a term paper to hand in as their own or had obtained a copy of an exam prior to taking the exam"     ,  "0 = No, 1 = Yes",
-  "counselors_fte",   "copied answers during an exam from someone sitting near to them ",  "0 = No, 1 = Yes") %>% 
+  "leaid",   "District Identification Code", "",
+  "ncessch",   "School Identification Code", "",
+  "report_dis",   "Number of students harassed or bullied on the basis of disability",  "0 = No reported incidents, 1 = At least one reported incident",
+  "report_race",  "Number of students harassed or bullied on the basis of race, color, or national origin",  "0 = No reported incidents, 1 = At least one reported incident",
+  "report_sex", "Number of students harassed or bullied on the basis of sex",  "0 = No reported incidents, 1 = At least one reported incident",
+  "counselors_fte", "Number of full time equivalent counselors hired as school staff",  "0 = No staff present, 1 = At least one staff present",  
+  "report_sex", "Number of full time equivalent psychologists hired as school staff",  "0 = No staff present, 1 = At least one staff present",
+  "counselors_fte", "Number of full time equivalent law enforcement officers hired as school staff",  "0 = No staff present, 1 = At least one staff present") %>% 
   gt() %>% 
   tab_header(
     title = "LCA indicators"  # Add a title
   ) %>%
   tab_options(
-    table.width = pct(80)
+    table.width = pct(75)
   ) %>%
   tab_footnote(
-    footnote = "Undergraduate Cheating Behavior",
-    location = cells_title())
+    footnote = "Civil Rights Data Collection (CRDC)",
+    location = cells_title()) 
 
+#PDF Option: 
+#kableExtra::kable(df, caption = "LCA Indicators", booktabs = TRUE) %>% 
+#  kableExtra::kable_styling(latex_options=c("striped","scale_down"))
+```
+
+------------------------------------------------------------------------
+
+**Variables have been transformed to be dichotomous indicators using the following coding strategy**
+
+Harassment and bullying count variables are recoded `1` if the school reported at least one incident of harassment (`0` indicates no reported incidents). 
+On the original scale reported by the CDRC staff variables for full time equivalent employees (FTE)  are represented as `1`  and part time employees are represented by values between `1` and `0`. Schools with greater than one staff of the designated type are represented by values greater than 1. All values greater than zero were recorded as `1s` (e.g., `.5`, `1`,`3`) indicating that the school has a staff present on campus at least part time. Schools with no staff of the designated type are indicated as `0` for the dichotomous variable. 
+
+------------------------------------------------------------------------
+
+```{r, echo=FALSE, eval=TRUE, fig.align='center'}
+
+grViz(" digraph cfa_model {
+
+# The `graph` statement - No editing needed
+
+    graph [layout = dot, overlap = true]
+ 
+# Two `node` statements
+ 
+# One for measured variables (box) 
+
+    node [shape=box]
+    report_dis report_race report_sex counselors_fte psych_fte law_fte;
+ 
+# One for latent variables (circle) 
+ 
+    node [shape=circle]
+    bully [label=<Bullying <br/>C<sub>k</sub>>];
+    
+# `edge` statements
+ 
+    edge [minlen = 2]
+    bully -> {report_dis report_race report_sex counselors_fte psych_fte law_fte}
+ 
+ }") 
 ```
 
 ------------------------------------------------------------------------
@@ -122,7 +144,7 @@ tribble(
 ### Prepare Data
 
 ```{r, eval=TRUE}
-df_bully <- read_csv(here("data", "crdc_hs_az17.csv")) %>% 
+df_bully <- read_csv(here("data", "crdc_lca_data.csv")) %>% 
   clean_names() %>% 
   dplyr::select(report_dis, report_race, report_sex, counselors_fte, psych_fte, law_fte) 
 ```
@@ -177,7 +199,6 @@ lca_6  <- lapply(1:6, function(k) {
   ANALYSIS = 
    "estimator = mlr; 
     type = mixture;
-    stseed = 5212020;
     starts = 200 100; 
     processors = 10;",
   
@@ -266,7 +287,7 @@ locations = cells_title()
   tab_options(column_labels.font.weight = "bold") %>%
   fmt_number(c(3:7),
              decimals = 2) %>%
-  fmt_missing(1:11,
+  sub_missing(1:11,
               missing_text = "--") %>%
   fmt(
     c(8:9, 11),
@@ -355,8 +376,8 @@ allFit %>%
   theme_cowplot() +
   labs(x = "Number of Classes", y = "Information Criteria Value", title = "Information Criteria") +
   theme(
-    text = element_text(family = "Times", size = 12),
-    legend.text = element_text(family="Times", size=12),
+    text = element_text(family = "serif", size = 12),
+    legend.text = element_text(family="serif", size=12),
     legend.key.width = unit(3, "line"),
     legend.title = element_blank(),
     legend.position = "top"  
@@ -414,7 +435,7 @@ ggplot(
   geom_line() +
   scale_colour_viridis_d() +
   facet_wrap( ~ model, ncol = 2) +
-  labs(title = "Cheating Behavior Items",
+  labs(title = "Bullying Items",
        x = " ", y = "Probability") +
   theme_minimal() +
   theme(panel.grid.major.y = element_blank(),
@@ -432,12 +453,12 @@ ggsave(here("figures", "compare_kclass_plot.png"), dpi=300, height=5, width=7, u
 
 ------------------------------------------------------------------------
 
-### 2-Class Probability Plot
+### 3-Class Probability Plot
 
-```{r}
+```{r, fig.height=6, fig.width=10}
 source("plot_lca_function.txt")
 
-plot_lca_function(model_name = output_bully$c2_bully.out)
+plot_lca_function(model_name = output_bully$c3_bully.out)
 ```
 
 ------------------------------------------------------------------------
@@ -445,27 +466,264 @@ plot_lca_function(model_name = output_bully$c2_bully.out)
 Save figure:
 
 ```{r, eval = FALSE}
-ggsave(here("figures", "C2_bully_LCA_Plot.png"), dpi="retina", height=5, width=7, units="in")
+ggsave(here("figures", "C3_bully_LCA_Plot.png"), dpi="retina", height=5, width=7, units="in")
 ```
+
+------------------------------------------------------------------------
+
+### Observed Response Patterns
+
+Save response frequencies for the 2-class model from the previous lab with `response is _____.dat` under `SAVEDATA.`
+
+```{r, cache = TRUE}
+
+patterns  <- mplusObject(
+  
+  TITLE = "C3 LCA - Save response patterns", 
+  
+  VARIABLE = 
+  "categorical = report_dis-law_fte; 
+   usevar =  report_dis-law_fte;
+    
+   classes = c(2);",
+  
+  ANALYSIS = 
+   "estimator = mlr; 
+    type = mixture;
+    starts = 200 100; 
+    processors = 10;
+    stseed = 802779;",
+  
+  SAVEDATA = 
+   "File=savedata.dat;
+    Save=cprob;
+    
+    ! Code to save response frequency data 
+    
+    response is resp_patterns.dat;",
+  
+  OUTPUT = "residual patterns tech10 tech11 tech14",
+  
+  usevariables = colnames(df_bully),
+  rdata = df_bully)
+
+patterns_fit <- mplusModeler(patterns,
+                dataout=here("enum", "bully.dat"),
+                modelout=here("enum", "patterns.inp") ,
+                check=TRUE, run = TRUE, hashfilename = FALSE)
+```
+
+Note: You may see an error that says `<simpleError in bivarFitData[mPos, ] <- c(vars, values): number of items to replace is not a multiple of replacement length>`, the developers are aware of this and are working to fix it.
+
+------------------------------------------------------------------------
+
+Read in observed response pattern data and relabel the columns
+
+```{r}
+# Read in response frequency data that we just created:
+patterns <- read_table(here("enum", "resp_patterns.dat"),
+                        col_names=FALSE, na = "*") 
+
+# Extract the column names
+names <- names(readModels(here("enum", "patterns.out"))[['savedata']])
+
+# Add the names back to the dataset
+colnames(patterns) <- c("Frequency", names)  
+```
+
+Create a table with the top 5 unconditional response pattern, then top of conditional response pattern for each modal class assignment
+
+```{r,eval=TRUE}
+# Order responses by highest frequency
+order_highest <- patterns %>% 
+  arrange(desc(Frequency)) 
+
+# Loop `patterns` data to list top 5 conditional response patterns for each class
+loop_cond  <- lapply(1:max(patterns$C), function(k) {       
+order_cond <- patterns %>%                    
+  filter(C == k) %>%                    
+  arrange(desc(Frequency)) %>%                
+  head(5)                                     
+  })                                          
+
+# Convert loop into data frame
+table_data <- as.data.frame(bind_rows(loop_cond))
+
+# Combine unconditional and conditional responses patterns
+response_patterns <-  rbind(order_highest[1:5,], table_data) 
+```
+
+Finally, use `{gt}` to make a nicely formatted table
+
+```{r}
+response_patterns %>% 
+  gt() %>%
+    tab_header(
+    title = "Observed Response Patterns",
+    subtitle = html("Response patterns, estimated frequencies, estimated posterior class probabilities and modal assignments")) %>% 
+    tab_source_note(
+    source_note = md("Data Source: **Civil Rights Data Collection (CRDC)**")) %>%
+    cols_label(
+      Frequency = html("<i>f</i><sub>r</sub>"),
+    REPORT_D = "Harrassment: Disability",
+    REPORT_R = "Harrassment: Race",
+    REPORT_S = "Harrassment: Sex",
+    COUNSELO = "Staff: Counselor",
+    PSYCH_FT = "Staff: Psychologist",
+    LAW_FTE = "Staff: Law Enforcement",
+    CPROB1 = html("P<sub><i>k</i></sub>=1"),
+    CPROB2 = html("P<sub><i>k</i></sub>=2"),
+    C = md("*k*")) %>% 
+  tab_row_group(
+    label = "Unconditional response patterns",
+    rows = 1:5) %>%
+  tab_row_group(
+    label = md("*k* = 1 Conditional response patterns"),
+    rows = 6:10) %>% #EDIT THESE VALUES BASED ON THE LAST COLUMN
+  tab_row_group(
+    label = md("*k* = 2 Conditional response patterns"),
+    rows = 11:15)  %>% #EDIT THESE VALUES BASED ON THE LAST COLUMN
+    row_group_order(
+      groups = c("Unconditional response patterns",
+                 md("*k* = 1 Conditional response patterns"),
+                 md("*k* = 2 Conditional response patterns"))) %>% 
+    tab_footnote(
+    footnote = html(
+      "<i>Note.</i> <i>f</i><sub>r</sub> = response pattern frequency; P<sub><i>k</i></sub> = posterior class probabilities"
+    )
+  ) %>% 
+  cols_align(align = "center") %>% 
+  opt_align_table_header(align = "left") %>% 
+  gt::tab_options(table.font.names = "Times New Roman")
+```
+
+------------------------------------------------------------------------
+
+### Classification Diagnositics
+
+Use Mplus to calculate k-class confidence intervals (Note: Change the synax to make your chosen *k*-class model):
+
+```{r, cache = TRUE}
+classification  <- mplusObject(
+  
+  TITLE = "C3 LCA - Calculated k-Class 95% CI",
+  
+  VARIABLE =
+    "categorical = report_dis-law_fte;
+   usevar =  report_dis-law_fte;
+   classes = c(3);", 
+  
+  ANALYSIS =
+    "estimator = ml;
+    type = mixture;
+    starts = 200 100; 
+    processors = 10;
+    stseed = 802779;
+    bootstrap = 1000;",
+  
+  MODEL =
+    "
+  !CHANGE THIS SECTION TO YOUR CHOSEN k-CLASS MODEL
+    
+  %OVERALL%
+  [C#1](c1);
+  
+  [C#2](C2)
+
+  Model Constraint:
+  New(p1 p2 p3);
+  
+  p1 = exp(c1)/(1+exp(c1)+exp(c2));
+  p2 = exp(c2)/(1+exp(c1)+exp(c2));
+  p3 = 1/(1+exp(c1)+exp(c2));",
+
+  
+  OUTPUT = "sampstat tech11 tech14 cinterval(bcbootstrap)",
+  
+  usevariables = colnames(df_bully),
+  rdata = df_bully)
+
+classification_fit <- mplusModeler(classification,
+                dataout=here("enum", "bully.dat"),
+                modelout=here("enum", "class.inp") ,
+                check=TRUE, run = TRUE, hashfilename = FALSE)
+```
+
+------------------------------------------------------------------------
+
+Read in the 3-class model:
+
+```{r}
+# Read in the 3-class model and extract information needed
+output_bully <- readModels(here("enum", "class.out"))
+
+# Entropy
+entropy <- c(output_bully$summaries$Entropy, rep(NA, output_bully$summaries$NLatentClasses-1))
+
+# 95% k-Class and k-class 95% Confidence Intervals
+k_ci <- output_bully$parameters$ci.unstandardized %>% 
+  filter(paramHeader == "New.Additional.Parameters") %>% 
+  unite(CI, c(low2.5,up2.5), sep=", ", remove = TRUE) %>% 
+  mutate(CI = paste0("[", CI, "]")) %>% 
+  rename(kclass=est) %>% 
+  dplyr::select(kclass, CI)
+
+# AvePPk = Average Latent Class Probabilities for Most Likely Latent Class Membership (Row) by Latent Class (Column)
+avePPk <- tibble(avePPk = diag(output_bully$class_counts$avgProbs.mostLikely))
+
+# mcaPk = modal class assignment proportion 
+mcaPk <- round(output_bully$class_counts$mostLikely,3) %>% 
+  mutate(model = paste0("Class ", class)) %>% 
+  add_column(avePPk, k_ci) %>% 
+  rename(mcaPk = proportion) %>% 
+  dplyr::select(model, kclass, CI, mcaPk, avePPk)
+
+# OCCk = odds of correct classification
+OCCk <- mcaPk %>% 
+  mutate(OCCk = round((avePPk/(1-avePPk))/(kclass/(1-kclass)),3))
+
+# Put everything together
+class_table <- data.frame(OCCk, entropy)
+```
+
+Now, use `{gt}` to make a nicely formatted table
+
+```{r}
+class_table %>% 
+  gt() %>%
+    tab_header(
+    title = "Model Classification Diagnostics for the 2-Class Solution") %>%
+    cols_label(
+      model = md("*k*-Class"),
+      kclass = md("*k*-Class Proportions"),
+      CI = "95% CI",
+      mcaPk = md("*mcaPk*"),
+      avePPk = md("*AvePPk*"),
+      OCCk = md("*OCCk*"),
+      entropy = "Entropy") %>% 
+    sub_missing(7,
+              missing_text = "") %>%
+    tab_footnote(
+    footnote = html(
+      "<i>Note.</i> <i>f</i><sub>r</sub> = response pattern frequency; P<sub><i>k</i></sub> = posterior class probabilities"
+    )
+  ) %>% 
+  cols_align(align = "center") %>% 
+  opt_align_table_header(align = "left") %>% 
+  gt::tab_options(table.font.names = "Times New Roman")
+```
+
 
 ------------------------------------------------------------------------
 
 ## References
 
-Drew A. Linzer, Jeffrey B. Lewis (2011).
-poLCA: An R Package for Polytomous Variable Latent Class Analysis.
-Journal of Statistical Software, 42(10), 1-29.
-URL <http://www.jstatsoft.org/v42/i10/>.
 
 Hallquist, M. N., & Wiley, J. F.
 (2018).
 MplusAutomation: An R Package for Facilitating Large-Scale Latent Variable Analyses in Mplus.
 Structural equation modeling: a multidisciplinary journal, 25(4), 621-638.
 
-Miller, J. D., Hoffer, T., Suchner, R., Brown, K., & Nelson, C.
-(1992).
-LSAY codebook.
-Northern Illinois University.
 
 Muthén, B. O., Muthén, L. K., & Asparouhov, T.
 (2017).
@@ -478,11 +736,6 @@ and Muthén, B.O.
 Mplus User's Guide.
 Eighth Edition.
 Los Angeles, CA: Muthén & Muthén
-
-Quirk, M., Furlong, M., Lilles, E., Felix, E., & Chin, J.
-(2011).
-Preliminary development of a kindergarten school readiness assessment for Latino students.
-Journal of Applied School Psychology, 27(1), 77-102.
 
 R Core Team (2017).
 R: A language and environment for statistical computing.
