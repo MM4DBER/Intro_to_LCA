@@ -1,13 +1,13 @@
 Mplus VERSION 8.8
 MUTHEN & MUTHEN
-03/06/2023   1:23 PM
+06/07/2023   2:54 PM
 
 INPUT INSTRUCTIONS
 
   TITLE:
   C3 LCA - Calculated k-Class 95% CI
   DATA:
-  FILE = "C:/Users/Dina Arch/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat";
+  FILE = "C:/Users/dinan/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat";
 
   VARIABLE:
   NAMES = report_dis report_race report_sex counselors_fte psych_fte law_fte;
@@ -123,7 +123,7 @@ Random Starts Specifications
 Link                                                         LOGIT
 
 Input data file(s)
-  C:/Users/Dina Arch/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat
+  C:/Users/dinan/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat
 Input data format  FREE
 
 
@@ -261,7 +261,6 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5122.478  48737            180
            -5122.478  550660           11
            -5122.478  437868           125
-           -5122.478  472783           5
            -5123.945  50385            31
            -5123.945  872880           98
            -5123.945  266136           131
@@ -279,7 +278,7 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5123.979  636119           35
            -5127.440  487481           172
 
-7 perturbed starting value run(s) did not converge or were rejected in the third stage.
+8 perturbed starting value run(s) did not converge or were rejected in the third stage.
 
 
 
@@ -348,9 +347,9 @@ BASED ON THE ESTIMATED MODEL
     Latent
    Classes
 
-       1        505.55240          0.24941
-       2        215.53079          0.10633
-       3       1305.91680          0.64426
+       1        505.55238          0.24941
+       2        215.53080          0.10633
+       3       1305.91682          0.64426
 
 
 FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
@@ -359,9 +358,9 @@ BASED ON ESTIMATED POSTERIOR PROBABILITIES
     Latent
    Classes
 
-       1        505.55240          0.24941
-       2        215.53079          0.10633
-       3       1305.91680          0.64426
+       1        505.55238          0.24941
+       2        215.53080          0.10633
+       3       1305.91682          0.64426
 
 
 FINAL CLASS COUNTS AND PROPORTIONS FOR THE LATENT CLASSES
@@ -640,9 +639,9 @@ Latent Class 3
     Category 2       0.000       0.000       0.000       0.019       0.042       0.049       0.057
 
 
-     Beginning Time:  13:23:56
-        Ending Time:  13:24:17
-       Elapsed Time:  00:00:21
+     Beginning Time:  14:54:45
+        Ending Time:  14:55:32
+       Elapsed Time:  00:00:47
 
 
 

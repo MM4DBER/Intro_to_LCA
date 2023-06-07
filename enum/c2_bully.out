@@ -1,13 +1,13 @@
 Mplus VERSION 8.8
 MUTHEN & MUTHEN
-03/06/2023   1:22 PM
+04/17/2023  12:36 PM
 
 INPUT INSTRUCTIONS
 
   TITLE:
   2-Class
   DATA:
-  FILE = "C:/Users/Dina Arch/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat";
+  FILE = "C:/Users/dnajiarch/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat";
 
   VARIABLE:
   NAMES = report_dis report_race report_sex counselors_fte psych_fte law_fte;
@@ -104,7 +104,7 @@ Random Starts Specifications
 Link                                                         LOGIT
 
 Input data file(s)
-  C:/Users/Dina Arch/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat
+  C:/Users/dnajiarch/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat
 Input data format  FREE
 
 
@@ -181,7 +181,6 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5194.136  887676           22
            -5194.136  471398           74
            -5194.136  462953           7
-           -5194.136  903420           5
            -5194.136  751054           117
            -5194.136  957392           79
            -5194.136  587946           120
@@ -221,7 +220,7 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5194.136  127215           9
            -5194.136  467339           66
 
-46 perturbed starting value run(s) did not converge or were rejected in the third stage.
+47 perturbed starting value run(s) did not converge or were rejected in the third stage.
 
 
 
@@ -520,8 +519,8 @@ The following plots are available:
   Scatterplots (sample values)
   Sample proportions and estimated probabilities
 
-     Beginning Time:  13:22:25
-        Ending Time:  13:22:36
+     Beginning Time:  12:36:05
+        Ending Time:  12:36:16
        Elapsed Time:  00:00:11
 
 

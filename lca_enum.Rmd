@@ -25,7 +25,8 @@ htmltools::img(src = knitr::image_uri(file.path("figures/immerse_hex.png")),
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, 
                       warning = FALSE,
-                      message = FALSE) #Here, I have made it so that when you knit your .rmd, warnings and messages will not show up in the html markdown. 
+                      message = FALSE,
+                      tidy.opts=list(width.cutoff=60)) #Here, I have made it so that when you knit your .rmd, warnings and messages will not show up in the html markdown. 
 ```
 
 ------------------------------------------------------------------------
@@ -46,12 +47,16 @@ Visit our [GitHub](https://github.com/immerse-ucsb) account to download the mate
 
 ------------------------------------------------------------------------
 
-## Example: Bullying in Schools 
+## Example: Bullying in Schools
 
 ------------------------------------------------------------------------
 
-
-To demonstrate mixture modeling in the training program and online resource components of the IES grant we utilize the *Civil Rights Data Collection (CRDC)* (CRDC) data repository. The CRDC is a federally mandated school-level data collection effort that occurs every other year. This public data is currently available for selected latent class indicators across 4 years (2011, 2013, 2015, 2017) and all US states. In this example, we use the Arizona state sample. We utilize six focal indicators which constitute the latent class model in our example; three variables which report on harassment/bullying in schools based on disability, race, or sex, and three variables on full-time equivalent school staff hires (counselor, psychologist, law enforcement). This data source also includes covariates on a variety of subjects and distal outcomes reported in 2018 such as math/reading assessments and graduation rates. 
+To demonstrate mixture modeling in the training program and online resource components of the IES grant we utilize the *Civil Rights Data Collection (CRDC)* (CRDC) data repository.
+The CRDC is a federally mandated school-level data collection effort that occurs every other year.
+This public data is currently available for selected latent class indicators across 4 years (2011, 2013, 2015, 2017) and all US states.
+In this example, we use the Arizona state sample.
+We utilize six focal indicators which constitute the latent class model in our example; three variables which report on harassment/bullying in schools based on disability, race, or sex, and three variables on full-time equivalent school staff hires (counselor, psychologist, law enforcement).
+This data source also includes covariates on a variety of subjects and distal outcomes reported in 2018 such as math/reading assessments and graduation rates.
 
 ------------------------------------------------------------------------
 
@@ -71,7 +76,6 @@ library(DiagrammeR)
 here::i_am("lca_enum.Rmd")
 ```
 
-
 ### Variable Description
 
 ```{r, echo=FALSE, eval=TRUE}
@@ -86,28 +90,30 @@ tribble(
   "counselors_fte", "Number of full time equivalent counselors hired as school staff",  "0 = No staff present, 1 = At least one staff present",  
   "report_sex", "Number of full time equivalent psychologists hired as school staff",  "0 = No staff present, 1 = At least one staff present",
   "counselors_fte", "Number of full time equivalent law enforcement officers hired as school staff",  "0 = No staff present, 1 = At least one staff present") %>% 
-  gt() %>% 
+gt() %>% 
   tab_header(
     title = "LCA indicators"  # Add a title
-  ) %>%
+    ) %>%
   tab_options(
     table.width = pct(75)
   ) %>%
   tab_footnote(
     footnote = "Civil Rights Data Collection (CRDC)",
-    location = cells_title()) 
-
-#PDF Option: 
-#kableExtra::kable(df, caption = "LCA Indicators", booktabs = TRUE) %>% 
-#  kableExtra::kable_styling(latex_options=c("striped","scale_down"))
+    location = cells_title()) %>% 
+  gtsave("figures/info.png")
 ```
+
+![](figures/info.png)
 
 ------------------------------------------------------------------------
 
 **Variables have been transformed to be dichotomous indicators using the following coding strategy**
 
-Harassment and bullying count variables are recoded `1` if the school reported at least one incident of harassment (`0` indicates no reported incidents). 
-On the original scale reported by the CDRC staff variables for full time equivalent employees (FTE)  are represented as `1`  and part time employees are represented by values between `1` and `0`. Schools with greater than one staff of the designated type are represented by values greater than 1. All values greater than zero were recorded as `1s` (e.g., `.5`, `1`,`3`) indicating that the school has a staff present on campus at least part time. Schools with no staff of the designated type are indicated as `0` for the dichotomous variable. 
+Harassment and bullying count variables are recoded `1` if the school reported at least one incident of harassment (`0` indicates no reported incidents).
+On the original scale reported by the CDRC staff variables for full time equivalent employees (FTE) are represented as `1` and part time employees are represented by values between `1` and `0`.
+Schools with greater than one staff of the designated type are represented by values greater than 1.
+All values greater than zero were recorded as `1s` (e.g., `.5`, `1`,`3`) indicating that the school has a staff present on campus at least part time.
+Schools with no staff of the designated type are indicated as `0` for the dichotomous variable.
 
 ------------------------------------------------------------------------
 
@@ -154,35 +160,36 @@ df_bully <- read_csv(here("data", "crdc_lca_data.csv")) %>%
 ### Descriptive Statistics
 
 ```{r}
+# Set up data to find proportions of binary indicators
 ds <- df_bully %>% 
-  drop_na() %>% 
-  pivot_longer(report_dis:law_fte, names_to = "variable") %>% 
-  group_by(variable) %>% 
-  summarise(prop = sum(value)/n(),
-            n = n()) %>%
-  arrange(desc(prop))
+  pivot_longer(c(report_dis, report_race, report_sex, counselors_fte, psych_fte, law_fte), names_to = "Variable") 
 
-ds %>% 
-  gt () %>% 
-  tab_header(title = md("**Descriptive Summary**")) %>%
-  cols_label(
-    variable = "Variable",
-    n = md("*N*"),
-    prop = md("Proportion Endorsed")
-  ) %>%
-  fmt_number(c(2),
-             decimals = 2) %>% 
-  cols_align(
-    align = "center",
-    columns = prop
-  ) 
+# Create table of variables and counts
+tab <- table(ds$Variable, ds$value)
+
+# Find proportions and round to 3 decimal places
+prop <- prop.table(tab, margin = 1) %>% 
+  round(3)
+
+# Combine everything to one table 
+dframe <- data.frame(Variables=rownames(tab), Proportion=prop[,2], Count=tab[,2])
+#remove row names
+row.names(dframe) <- NULL
+
+# Make it a gt() table
+prop_table <- dframe %>% 
+  gt()
+prop_table
+
+# Save as img
+gtsave(prop_table, here("figures", "prop_table.png"))
 ```
 
 ------------------------------------------------------------------------
 
-### Enumeration 
+### Enumeration
 
-This code uses the `mplusObject` function in the `MplusAutomation` package. 
+This code uses the `mplusObject` function in the `MplusAutomation` package.
 
 ```{r, cache = TRUE}
 
@@ -218,10 +225,10 @@ lca_enum_fit <- mplusModeler(lca_enum,
 })
 
 ```
- 
+
 ------------------------------------------------------------------------
 
-### Table of Fit 
+### Table of Fit
 
 First, extract data:
 
@@ -246,7 +253,6 @@ enum_extract <- LatexSummaryTable(
 
 
 allFit <- enum_extract %>%
-  mutate(aBIC = -2 * LL + Parameters * log((Observations + 2) / 24)) %>%
   mutate(CAIC = -2 * LL + Parameters * (log(Observations) + 1)) %>%
   mutate(AWE = -2 * LL + 2 * Parameters * (log(Observations) + 1.5)) %>%
   mutate(SIC = -.5 * BIC) %>%
@@ -340,10 +346,9 @@ locations = cells_title()
 fit_table1
 ```
 
-
 ------------------------------------------------------------------------
 
-Save table: 
+Save table:
 
 ```{r, eval = FALSE}
 gtsave(fit_table1, here("figures", "fit_table1.png"))
@@ -391,7 +396,6 @@ Save figure:
 ```{r}
 ggsave(here("figures", "info_criteria.png"), dpi=300, height=5, width=7, units="in")
 ```
-
 
 ------------------------------------------------------------------------
 
@@ -442,7 +446,6 @@ ggplot(
                           axis.text.x = element_text(angle = -45, hjust = -.1))                            
 ```
 
-
 ------------------------------------------------------------------------
 
 Save figure:
@@ -473,7 +476,7 @@ ggsave(here("figures", "C3_bully_LCA_Plot.png"), dpi="retina", height=5, width=7
 
 ### Observed Response Patterns
 
-Save response frequencies for the 2-class model from the previous lab with `response is _____.dat` under `SAVEDATA.`
+Save response frequencies for the 3-class model from the previous lab with `response is _____.dat` under `SAVEDATA.`
 
 ```{r, cache = TRUE}
 
@@ -484,15 +487,13 @@ patterns  <- mplusObject(
   VARIABLE = 
   "categorical = report_dis-law_fte; 
    usevar =  report_dis-law_fte;
-    
-   classes = c(2);",
+   classes = c(3);",
   
   ANALYSIS = 
    "estimator = mlr; 
     type = mixture;
     starts = 200 100; 
-    processors = 10;
-    stseed = 802779;",
+    processors = 10;",
   
   SAVEDATA = 
    "File=savedata.dat;
@@ -573,6 +574,7 @@ response_patterns %>%
     LAW_FTE = "Staff: Law Enforcement",
     CPROB1 = html("P<sub><i>k</i></sub>=1"),
     CPROB2 = html("P<sub><i>k</i></sub>=2"),
+    CPROB3 = html("P<sub><i>k</i></sub>=3"),
     C = md("*k*")) %>% 
   tab_row_group(
     label = "Unconditional response patterns",
@@ -583,10 +585,14 @@ response_patterns %>%
   tab_row_group(
     label = md("*k* = 2 Conditional response patterns"),
     rows = 11:15)  %>% #EDIT THESE VALUES BASED ON THE LAST COLUMN
+  tab_row_group(
+    label = md("*k* = 3 Conditional response patterns"),
+    rows = 16:20)  %>% #EDIT THESE VALUES BASED ON THE LAST COLUMN  
     row_group_order(
       groups = c("Unconditional response patterns",
                  md("*k* = 1 Conditional response patterns"),
-                 md("*k* = 2 Conditional response patterns"))) %>% 
+                 md("*k* = 2 Conditional response patterns"),
+                 md("*k* = 3 Conditional response patterns"))) %>% 
     tab_footnote(
     footnote = html(
       "<i>Note.</i> <i>f</i><sub>r</sub> = response pattern frequency; P<sub><i>k</i></sub> = posterior class probabilities"
@@ -594,12 +600,15 @@ response_patterns %>%
   ) %>% 
   cols_align(align = "center") %>% 
   opt_align_table_header(align = "left") %>% 
-  gt::tab_options(table.font.names = "Times New Roman")
+  gt::tab_options(table.font.names = "Times New Roman") %>% 
+  gtsave("figures/response_patterns.png")
 ```
+
+![](figures/response_patterns.png)
 
 ------------------------------------------------------------------------
 
-### Classification Diagnositics
+### Classification Diagnostics
 
 Use Mplus to calculate k-class confidence intervals (Note: Change the synax to make your chosen *k*-class model):
 
@@ -692,7 +701,7 @@ Now, use `{gt}` to make a nicely formatted table
 class_table %>% 
   gt() %>%
     tab_header(
-    title = "Model Classification Diagnostics for the 2-Class Solution") %>%
+    title = "Model Classification Diagnostics for the 3-Class Solution") %>%
     cols_label(
       model = md("*k*-Class"),
       kclass = md("*k*-Class Proportions"),
@@ -710,20 +719,20 @@ class_table %>%
   ) %>% 
   cols_align(align = "center") %>% 
   opt_align_table_header(align = "left") %>% 
-  gt::tab_options(table.font.names = "Times New Roman")
+  gt::tab_options(table.font.names = "Times New Roman")%>%
+  gtsave("figures/class_table.png") 
 ```
 
+![](figures/class_table.png)
 
 ------------------------------------------------------------------------
 
 ## References
 
-
 Hallquist, M. N., & Wiley, J. F.
 (2018).
 MplusAutomation: An R Package for Facilitating Large-Scale Latent Variable Analyses in Mplus.
 Structural equation modeling: a multidisciplinary journal, 25(4), 621-638.
-
 
 Muthén, B. O., Muthén, L. K., & Asparouhov, T.
 (2017).
@@ -749,25 +758,3 @@ Journal of Open Source Software, 4(43), 1686, <https://doi.org/10.21105/joss.016
 ------------------------------------------------------------------------
 
 ![](figures/UCSB_Navy_mark.png){width="75%"}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
