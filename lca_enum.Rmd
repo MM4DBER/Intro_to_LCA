@@ -3,12 +3,12 @@ title: "Latent Class Analysis Enumeration"
 author: "IMMERSE Training Team"
 date: "Updated: `r format(Sys.time(), '%B %d, %Y')`"
 output:
-  pdf_document:
-    toc: yes
   html_document:
     toc: yes
     toc_float: yes
     theme: flatly
+  pdf_document:
+    toc: yes
 editor_options: 
   markdown: 
     wrap: sentence
@@ -740,6 +740,8 @@ classification_fit <- mplusModeler(classification,
                 modelout=here("mplus", "class.inp") ,
                 check=TRUE, run = TRUE, hashfilename = FALSE)
 ```
+
+*Note*: Ensure that the classes did not shift during this step (i.g., Class 1 in the enumeration run is now Class 4). Evaluate output and compare the class counts and proportions for the latent classes. Using the OPTSEED function ensures replication of the best loglikelihood value run.
 
 ------------------------------------------------------------------------
 
