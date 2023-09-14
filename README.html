@@ -618,7 +618,8 @@ enum_extract &lt;- LatexSummaryTable(
     &quot;Observations&quot;
   ),
   sortBy = &quot;Title&quot;
-)
+) %&gt;% 
+  slice_head(n=4) # Select first four models (Class 1 through 4)
 
 
 allFit &lt;- enum_extract %&gt;%
@@ -649,12 +650,12 @@ function(x) ifelse(x &lt; 0.001, “&lt;.001”, scales::number(x, accuracy
 = .01)) ) %&gt;% fmt( 10, fns = function (x) ifelse(x &gt; 100,
 “&gt;100”, scales::number(x, accuracy = .01)) ) %&gt;%<br />
 tab_style( style = list( cell_text(weight = “bold”) ), locations =
-list(cells_body( columns = BIC, row = BIC == min(BIC[c(1:6)]) # Change
+list(cells_body( columns = BIC, row = BIC == min(BIC[c(1:4)]) # Change
 this to the number of classes you estimated ), cells_body( columns =
-aBIC, row = aBIC == min(aBIC[1:6]) ), cells_body( columns = CAIC, row =
-CAIC == min(CAIC[1:6]) ), cells_body( columns = AWE, row = AWE ==
-min(AWE[1:6]) ), cells_body( columns = cmPk, row = cmPk ==
-max(cmPk[1:6]) ),<br />
+aBIC, row = aBIC == min(aBIC[1:4]) ), cells_body( columns = CAIC, row =
+CAIC == min(CAIC[1:4]) ), cells_body( columns = AWE, row = AWE ==
+min(AWE[1:4]) ), cells_body( columns = cmPk, row = cmPk ==
+max(cmPk[1:4]) ),<br />
 cells_body( columns = BF, row = BF &gt; 10), cells_body( columns =
 T11_VLMR_PValue, row = ifelse(T11_VLMR_PValue &lt; .001 &amp;
 lead(T11_VLMR_PValue) &gt; .05, T11_VLMR_PValue &lt; .001, NA)),

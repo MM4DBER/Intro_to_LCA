@@ -292,7 +292,8 @@ enum_extract <- LatexSummaryTable(
     "Observations"
   ),
   sortBy = "Title"
-)
+) %>% 
+  slice_head(n=4) # Select first four models (Class 1 through 4)
 
 
 allFit <- enum_extract %>%
@@ -356,23 +357,23 @@ locations = cells_title()
       ),
     locations = list(cells_body(
      columns = BIC,
-     row = BIC == min(BIC[c(1:6)]) # Change this to the number of classes you estimated
+     row = BIC == min(BIC[c(1:4)]) # Change this to the number of classes you estimated
     ),
     cells_body(
      columns = aBIC,
-     row = aBIC == min(aBIC[1:6])
+     row = aBIC == min(aBIC[1:4])
     ),
     cells_body(
      columns = CAIC,
-     row = CAIC == min(CAIC[1:6])
+     row = CAIC == min(CAIC[1:4])
     ),
     cells_body(
      columns = AWE,
-     row = AWE == min(AWE[1:6])
+     row = AWE == min(AWE[1:4])
     ),
     cells_body(
      columns = cmPk,
-     row =  cmPk == max(cmPk[1:6])
+     row =  cmPk == max(cmPk[1:4])
      ),    
     cells_body(
      columns = BF,
