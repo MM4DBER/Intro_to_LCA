@@ -53,7 +53,6 @@ library(DiagrammeR)
 here::i_am("lca_enum.Rmd")
 ```
 
-
 ### Variable Description
 
 ```{r, echo=FALSE, eval=TRUE}
@@ -68,28 +67,30 @@ tribble(
   "counselors_fte", "Number of full time equivalent counselors hired as school staff",  "0 = No staff present, 1 = At least one staff present",  
   "report_sex", "Number of full time equivalent psychologists hired as school staff",  "0 = No staff present, 1 = At least one staff present",
   "counselors_fte", "Number of full time equivalent law enforcement officers hired as school staff",  "0 = No staff present, 1 = At least one staff present") %>% 
-  gt() %>% 
+gt() %>% 
   tab_header(
     title = "LCA indicators"  # Add a title
-  ) %>%
+    ) %>%
   tab_options(
     table.width = pct(75)
   ) %>%
   tab_footnote(
     footnote = "Civil Rights Data Collection (CRDC)",
-    location = cells_title()) 
-
-#PDF Option: 
-#kableExtra::kable(df, caption = "LCA Indicators", booktabs = TRUE) %>% 
-#  kableExtra::kable_styling(latex_options=c("striped","scale_down"))
+    location = cells_title()) %>% 
+  gtsave("figures/info.png")
 ```
+
+![](figures/info.png)
 
 ------------------------------------------------------------------------
 
 **Variables have been transformed to be dichotomous indicators using the following coding strategy**
 
-Harassment and bullying count variables are recoded `1` if the school reported at least one incident of harassment (`0` indicates no reported incidents). 
-On the original scale reported by the CDRC staff variables for full time equivalent employees (FTE)  are represented as `1`  and part time employees are represented by values between `1` and `0`. Schools with greater than one staff of the designated type are represented by values greater than 1. All values greater than zero were recorded as `1s` (e.g., `.5`, `1`,`3`) indicating that the school has a staff present on campus at least part time. Schools with no staff of the designated type are indicated as `0` for the dichotomous variable. 
+Harassment and bullying count variables are recoded `1` if the school reported at least one incident of harassment (`0` indicates no reported incidents).
+On the original scale reported by the CDRC staff variables for full time equivalent employees (FTE) are represented as `1` and part time employees are represented by values between `1` and `0`.
+Schools with greater than one staff of the designated type are represented by values greater than 1.
+All values greater than zero were recorded as `1s` (e.g., `.5`, `1`,`3`) indicating that the school has a staff present on campus at least part time.
+Schools with no staff of the designated type are indicated as `0` for the dichotomous variable.
 
 ------------------------------------------------------------------------
 
@@ -136,35 +137,100 @@ df_bully <- read_csv(here("data", "crdc_lca_data.csv")) %>%
 ### Descriptive Statistics
 
 ```{r}
+# Set up data to find proportions of binary indicators
 ds <- df_bully %>% 
-  drop_na() %>% 
-  pivot_longer(report_dis:law_fte, names_to = "variable") %>% 
-  group_by(variable) %>% 
-  summarise(prop = sum(value)/n(),
-            n = n()) %>%
-  arrange(desc(prop))
+  pivot_longer(c(report_dis, report_race, report_sex, counselors_fte, psych_fte, law_fte), names_to = "variable") 
 
-ds %>% 
-  gt () %>% 
-  tab_header(title = md("**Descriptive Summary**")) %>%
-  cols_label(
-    variable = "Variable",
-    n = md("*N*"),
-    prop = md("Proportion Endorsed")
+
+# Create table of variables and counts, then find proportions and round to 3 decimal places
+prop_df <- ds %>%
+  count(variable, value) %>%
+  group_by(variable) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup() %>%
+  mutate(prop = round(prop, 3))
+
+
+# Make it a gt() table
+prop_table <- prop_df %>% 
+  gt(groupname_col = "variable", rowname_col = "value") %>%
+  tab_stubhead(label = md("*Values*")) %>%
+  tab_header(
+    md(
+      "Variable Proportions"
+    )
   ) %>%
-  fmt_number(c(2),
-             decimals = 2) %>% 
-  cols_align(
-    align = "center",
-    columns = prop
+  cols_label(
+    variable = md("*Variable*"),
+    value = md("*Value*"),
+    n = md("*N*"),
+    prop = md("*Proportion*")
   ) 
+  
+prop_table
+
+# Save as img
+gtsave(prop_table, here("figures", "prop_table.png"))
 ```
 
 ------------------------------------------------------------------------
 
-### Enumeration 
+### Quick Introduction to `MplusAutomation`
 
-This code uses the `mplusObject` function in the `MplusAutomation` package. 
+
+**WHAT?**
+
+-   `MplusAutomation` is an `R` package
+-   It "wraps around" the `Mplus` program
+-   Requires both `R` & `Mplus` software
+-   Requires learning some basics of 2 programming languages
+-   Car metaphor: R/Rstudio is the *steering wheel or dashboard* & Mplus is the *engine*
+
+**WHY?**
+
+-   `MplusAutomation` can provide clearly organized work procedures in which every research decision can be documented in a single place
+-   Increase reproducibility, organization, efficiency, and transparency
+
+**HOW?**
+
+-   The interface for MplusAutomation is entirely within R-Studio. You do not need to open Mplus
+-   The code presented will be very repetitive by design
+
+Below is a template for `mplusObject()` & `mplusModeler()` functions. Use this template to run statistical models with Mplus. 
+
+```{r, eval = FALSE}
+
+m_template  <- mplusObject(
+  
+  TITLE = 
+    "", 
+  
+  VARIABLE = 
+    "",
+  
+  ANALYSIS = 
+    "",
+  
+  PLOT = 
+    "",
+  
+  OUTPUT = 
+    "",
+ 
+  usevariables = colnames(), 
+  rdata =  )
+
+m_template_fit <- mplusModeler(m_template, 
+                  dataout=here("", ".dat"),
+                  modelout=here("", ".inp"),
+                  check=TRUE, run = TRUE, hashfilename = FALSE)
+
+```
+
+
+### Enumeration
+
+This code uses the `mplusObject` function in the `MplusAutomation` package and saves all model runs in the `enum` folder.
 
 ```{r, cache = TRUE}
 
@@ -200,10 +266,12 @@ lca_enum_fit <- mplusModeler(lca_enum,
 })
 
 ```
- 
+
+**IMPORTANT**: Before moving forward, make sure to open each output document to ensure models were estimated normally. In this example, the last two models (5- and 6-class models) did not produce reliable output and are excluded.
+
 ------------------------------------------------------------------------
 
-### Table of Fit 
+### Table of Fit
 
 First, extract data:
 
@@ -228,7 +296,6 @@ enum_extract <- LatexSummaryTable(
 
 
 allFit <- enum_extract %>%
-  mutate(aBIC = -2 * LL + Parameters * log((Observations + 2) / 24)) %>%
   mutate(CAIC = -2 * LL + Parameters * (log(Observations) + 1)) %>%
   mutate(AWE = -2 * LL + 2 * Parameters * (log(Observations) + 1.5)) %>%
   mutate(SIC = -.5 * BIC) %>%
@@ -310,22 +377,21 @@ locations = cells_title()
     cells_body(
      columns = BF,
      row =  BF > 10),
-    cells_body(
+    cells_body( 
      columns =  T11_VLMR_PValue,
-     row =  T11_VLMR_PValue < .001),
+     row =  ifelse(T11_VLMR_PValue < .001 & lead(T11_VLMR_PValue) > .05, T11_VLMR_PValue < .001, NA)),
     cells_body(
      columns =  BLRT_PValue,
-     row =  BLRT_PValue < .001)
+     row =  ifelse(BLRT_PValue < .001 & lead(BLRT_PValue) > .05, BLRT_PValue < .001, NA))
   )
 )
 
 fit_table1
 ```
 
-
 ------------------------------------------------------------------------
 
-Save table: 
+Save table:
 
 ```{r, eval = FALSE}
 gtsave(fit_table1, here("figures", "fit_table1.png"))
@@ -373,7 +439,6 @@ Save figure:
 ```{r}
 ggsave(here("figures", "info_criteria.png"), dpi=300, height=5, width=7, units="in")
 ```
-
 
 ------------------------------------------------------------------------
 
@@ -424,7 +489,6 @@ ggplot(
                           axis.text.x = element_text(angle = -45, hjust = -.1))                            
 ```
 
-
 ------------------------------------------------------------------------
 
 Save figure:
@@ -437,10 +501,13 @@ ggsave(here("figures", "compare_kclass_plot.png"), dpi=300, height=5, width=7, u
 
 ### 3-Class Probability Plot
 
-```{r, fig.height=6, fig.width=10}
-source("plot_lca_function.txt")
+Use the `plot_lca` function provided in the folder to plot the item probability plot. This function requires one argument:
+- `model_name`: The name of the Mplus `readModels` object (e.g., `output_bully$c3_bully.out`)
 
-plot_lca_function(model_name = output_bully$c3_bully.out)
+```{r fig.height=6, fig.width=10}
+source("plot_lca.txt")
+
+plot_lca(model_name = output_bully$c3_bully.out)
 ```
 
 ------------------------------------------------------------------------
@@ -455,7 +522,7 @@ ggsave(here("figures", "C3_bully_LCA_Plot.png"), dpi="retina", height=5, width=7
 
 ### Observed Response Patterns
 
-Save response frequencies for the 2-class model from the previous lab with `response is _____.dat` under `SAVEDATA.`
+Save response frequencies for the 3-class model from the previous lab with `response is _____.dat` under `SAVEDATA.`
 
 ```{r, cache = TRUE}
 
@@ -466,15 +533,14 @@ patterns  <- mplusObject(
   VARIABLE = 
   "categorical = report_dis-law_fte; 
    usevar =  report_dis-law_fte;
-    
-   classes = c(2);",
+   classes = c(3);",
   
   ANALYSIS = 
    "estimator = mlr; 
     type = mixture;
-    starts = 200 100; 
+    starts = 0;
     processors = 10;
-    stseed = 802779;",
+    optseed = 802779;",
   
   SAVEDATA = 
    "File=savedata.dat;
@@ -490,8 +556,8 @@ patterns  <- mplusObject(
   rdata = df_bully)
 
 patterns_fit <- mplusModeler(patterns,
-                dataout=here("enum", "bully.dat"),
-                modelout=here("enum", "patterns.inp") ,
+                dataout=here("mplus", "bully.dat"),
+                modelout=here("mplus", "patterns.inp") ,
                 check=TRUE, run = TRUE, hashfilename = FALSE)
 ```
 
@@ -503,11 +569,11 @@ Read in observed response pattern data and relabel the columns
 
 ```{r}
 # Read in response frequency data that we just created:
-patterns <- read_table(here("enum", "resp_patterns.dat"),
+patterns <- read_table(here("mplus", "resp_patterns.dat"),
                         col_names=FALSE, na = "*") 
 
 # Extract the column names
-names <- names(readModels(here("enum", "patterns.out"))[['savedata']])
+names <- names(readModels(here("mplus", "patterns.out"))[['savedata']])
 
 # Add the names back to the dataset
 colnames(patterns) <- c("Frequency", names)  
@@ -538,7 +604,7 @@ response_patterns <-  rbind(order_highest[1:5,], table_data)
 Finally, use `{gt}` to make a nicely formatted table
 
 ```{r}
-response_patterns %>% 
+resp_table <- response_patterns %>% 
   gt() %>%
     tab_header(
     title = "Observed Response Patterns",
@@ -555,6 +621,7 @@ response_patterns %>%
     LAW_FTE = "Staff: Law Enforcement",
     CPROB1 = html("P<sub><i>k</i></sub>=1"),
     CPROB2 = html("P<sub><i>k</i></sub>=2"),
+    CPROB3 = html("P<sub><i>k</i></sub>=3"),
     C = md("*k*")) %>% 
   tab_row_group(
     label = "Unconditional response patterns",
@@ -565,10 +632,14 @@ response_patterns %>%
   tab_row_group(
     label = md("*k* = 2 Conditional response patterns"),
     rows = 11:15)  %>% #EDIT THESE VALUES BASED ON THE LAST COLUMN
+  tab_row_group(
+    label = md("*k* = 3 Conditional response patterns"),
+    rows = 16:20)  %>% #EDIT THESE VALUES BASED ON THE LAST COLUMN  
     row_group_order(
       groups = c("Unconditional response patterns",
                  md("*k* = 1 Conditional response patterns"),
-                 md("*k* = 2 Conditional response patterns"))) %>% 
+                 md("*k* = 2 Conditional response patterns"),
+                 md("*k* = 3 Conditional response patterns"))) %>% 
     tab_footnote(
     footnote = html(
       "<i>Note.</i> <i>f</i><sub>r</sub> = response pattern frequency; P<sub><i>k</i></sub> = posterior class probabilities"
@@ -577,11 +648,22 @@ response_patterns %>%
   cols_align(align = "center") %>% 
   opt_align_table_header(align = "left") %>% 
   gt::tab_options(table.font.names = "Times New Roman")
+
+resp_table
 ```
 
 ------------------------------------------------------------------------
 
-### Classification Diagnositics
+Save table:
+
+```{r}
+gtsave(resp_table, here("figures","resp_table.png"))
+
+```
+
+------------------------------------------------------------------------
+
+### Classification Diagnostics
 
 Use Mplus to calculate k-class confidence intervals (Note: Change the synax to make your chosen *k*-class model):
 
@@ -598,7 +680,7 @@ classification  <- mplusObject(
   ANALYSIS =
     "estimator = ml;
     type = mixture;
-    starts = 200 100; 
+    starts = 0; 
     processors = 10;
     stseed = 802779;
     bootstrap = 1000;",
@@ -610,7 +692,7 @@ classification  <- mplusObject(
   %OVERALL%
   [C#1](c1);
   
-  [C#2](C2)
+  [C#2](C2);
 
   Model Constraint:
   New(p1 p2 p3);
@@ -620,14 +702,14 @@ classification  <- mplusObject(
   p3 = 1/(1+exp(c1)+exp(c2));",
 
   
-  OUTPUT = "sampstat tech11 tech14 cinterval(bcbootstrap)",
+  OUTPUT = "cinterval(bcbootstrap)",
   
   usevariables = colnames(df_bully),
   rdata = df_bully)
 
 classification_fit <- mplusModeler(classification,
-                dataout=here("enum", "bully.dat"),
-                modelout=here("enum", "class.inp") ,
+                dataout=here("mplus", "bully.dat"),
+                modelout=here("mplus", "class.inp") ,
                 check=TRUE, run = TRUE, hashfilename = FALSE)
 ```
 
@@ -637,7 +719,7 @@ Read in the 3-class model:
 
 ```{r}
 # Read in the 3-class model and extract information needed
-output_bully <- readModels(here("enum", "class.out"))
+output_bully <- readModels(here("mplus", "class.out"))
 
 # Entropy
 entropy <- c(output_bully$summaries$Entropy, rep(NA, output_bully$summaries$NLatentClasses-1))
@@ -671,28 +753,40 @@ class_table <- data.frame(OCCk, entropy)
 Now, use `{gt}` to make a nicely formatted table
 
 ```{r}
-class_table %>% 
+class_table <- class_table %>% 
   gt() %>%
     tab_header(
-    title = "Model Classification Diagnostics for the 2-Class Solution") %>%
+    title = "Model Classification Diagnostics for the 3-Class Solution") %>%
     cols_label(
       model = md("*k*-Class"),
       kclass = md("*k*-Class Proportions"),
       CI = "95% CI",
-      mcaPk = md("*mcaPk*"),
-      avePPk = md("*AvePPk*"),
-      OCCk = md("*OCCk*"),
+      mcaPk = html("McaP<sub>k</sub>"),
+      avePPk = md("AvePP<sub>k</sub>"),
+      OCCk = md("OCC<sub>k</sub>"),
       entropy = "Entropy") %>% 
     sub_missing(7,
               missing_text = "") %>%
     tab_footnote(
     footnote = html(
-      "<i>Note.</i> <i>f</i><sub>r</sub> = response pattern frequency; P<sub><i>k</i></sub> = posterior class probabilities"
+      "<i>Note.</i> McaP<sub>k</sub> = Modal class assignment proportion; AvePP<sub>k</sub> = Average posterior class probabilities; OCC<sub>k</sub> = Odds of correct classification; "
     )
   ) %>% 
   cols_align(align = "center") %>% 
   opt_align_table_header(align = "left") %>% 
   gt::tab_options(table.font.names = "Times New Roman")
+
+class_table
+```
+
+
+------------------------------------------------------------------------
+
+Save table:
+
+```{r}
+gtsave(class_table, here("figures","class_table.png"))
+
 ```
 
 
@@ -700,12 +794,10 @@ class_table %>%
 
 ## References
 
-
 Hallquist, M. N., & Wiley, J. F.
 (2018).
 MplusAutomation: An R Package for Facilitating Large-Scale Latent Variable Analyses in Mplus.
 Structural equation modeling: a multidisciplinary journal, 25(4), 621-638.
-
 
 Muthén, B. O., Muthén, L. K., & Asparouhov, T.
 (2017).
@@ -730,4 +822,4 @@ Journal of Open Source Software, 4(43), 1686, <https://doi.org/10.21105/joss.016
 
 ------------------------------------------------------------------------
 
-![](figures/UCSB_Navy_mark.png)
+![](figures/UCSB_Navy_mark.png){width="75%"}

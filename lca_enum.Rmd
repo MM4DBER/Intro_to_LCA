@@ -35,15 +35,18 @@ knitr::opts_chunk$set(echo = TRUE,
 
 ![](figures/IESNewLogo.jpg){style="float: left;" width="300"}
 
-The Institute of Mixture Modeling for Equity-Oriented Researchers, Scholars, and Educators (IMMERSE) is an IES funded training grant (R305B220021) to support Education scholars in integrating mixture modeling into their research.
+The Institute of Mixture Modeling for Equity-Oriented Researchers, Scholars, and Educators (IMMERSE) is an IES funded training grant (R305B220021) to support education scholars in integrating mixture modeling into their research.
 
--   Please [visit our website](https://immerse.education.ucsb.edu/) to learn more and apply for the year-long fellowship.
+-   Please [visit our website](https://immerse.education.ucsb.edu/) to learn more.
+
+-   Visit our [GitHub](https://github.com/immerse-ucsb) account to access all the IMMERSE materials.
 
 -   Follow us on [Twitter](https://twitter.com/IMMERSE_UCSB)!
 
-How to reference this walkthrough: *This work was supported by the IMMERSE Project* (IES - 305B220021)
-
-Visit our [GitHub](https://github.com/immerse-ucsb) account to download the materials needed for this walkthrough.
+How to reference this workshop: Institute of Mixture Modeling for Equity-Oriented Researchers, Scholars, and Educators (2023).
+IMMERSE Online Resources (IES No. 305B220021).
+Institute of Education Sciences.
+<https://immerse-ucsb.github.io/pre-training>
 
 ------------------------------------------------------------------------
 
@@ -162,23 +165,34 @@ df_bully <- read_csv(here("data", "crdc_lca_data.csv")) %>%
 ```{r}
 # Set up data to find proportions of binary indicators
 ds <- df_bully %>% 
-  pivot_longer(c(report_dis, report_race, report_sex, counselors_fte, psych_fte, law_fte), names_to = "Variable") 
+  pivot_longer(c(report_dis, report_race, report_sex, counselors_fte, psych_fte, law_fte), names_to = "variable") 
 
-# Create table of variables and counts
-tab <- table(ds$Variable, ds$value)
 
-# Find proportions and round to 3 decimal places
-prop <- prop.table(tab, margin = 1) %>% 
-  round(3)
+# Create table of variables and counts, then find proportions and round to 3 decimal places
+prop_df <- ds %>%
+  count(variable, value) %>%
+  group_by(variable) %>%
+  mutate(prop = n / sum(n)) %>%
+  ungroup() %>%
+  mutate(prop = round(prop, 3))
 
-# Combine everything to one table 
-dframe <- data.frame(Variables=rownames(tab), Proportion=prop[,2], Count=tab[,2])
-#remove row names
-row.names(dframe) <- NULL
 
 # Make it a gt() table
-prop_table <- dframe %>% 
-  gt()
+prop_table <- prop_df %>% 
+  gt(groupname_col = "variable", rowname_col = "value") %>%
+  tab_stubhead(label = md("*Values*")) %>%
+  tab_header(
+    md(
+      "Variable Proportions"
+    )
+  ) %>%
+  cols_label(
+    variable = md("*Variable*"),
+    value = md("*Value*"),
+    n = md("*N*"),
+    prop = md("*Proportion*")
+  ) 
+  
 prop_table
 
 # Save as img
@@ -187,9 +201,62 @@ gtsave(prop_table, here("figures", "prop_table.png"))
 
 ------------------------------------------------------------------------
 
+### Quick Introduction to `MplusAutomation`
+
+
+**WHAT?**
+
+-   `MplusAutomation` is an `R` package
+-   It "wraps around" the `Mplus` program
+-   Requires both `R` & `Mplus` software
+-   Requires learning some basics of 2 programming languages
+-   Car metaphor: R/Rstudio is the *steering wheel or dashboard* & Mplus is the *engine*
+
+**WHY?**
+
+-   `MplusAutomation` can provide clearly organized work procedures in which every research decision can be documented in a single place
+-   Increase reproducibility, organization, efficiency, and transparency
+
+**HOW?**
+
+-   The interface for MplusAutomation is entirely within R-Studio. You do not need to open Mplus
+-   The code presented will be very repetitive by design
+
+Below is a template for `mplusObject()` & `mplusModeler()` functions. Use this template to run statistical models with Mplus. 
+
+```{r, eval = FALSE}
+
+m_template  <- mplusObject(
+  
+  TITLE = 
+    "", 
+  
+  VARIABLE = 
+    "",
+  
+  ANALYSIS = 
+    "",
+  
+  PLOT = 
+    "",
+  
+  OUTPUT = 
+    "",
+ 
+  usevariables = colnames(), 
+  rdata =  )
+
+m_template_fit <- mplusModeler(m_template, 
+                  dataout=here("", ".dat"),
+                  modelout=here("", ".inp"),
+                  check=TRUE, run = TRUE, hashfilename = FALSE)
+
+```
+
+
 ### Enumeration
 
-This code uses the `mplusObject` function in the `MplusAutomation` package.
+This code uses the `mplusObject` function in the `MplusAutomation` package and saves all model runs in the `enum` folder.
 
 ```{r, cache = TRUE}
 
@@ -225,6 +292,8 @@ lca_enum_fit <- mplusModeler(lca_enum,
 })
 
 ```
+
+**IMPORTANT**: Before moving forward, make sure to open each output document to ensure models were estimated normally. In this example, the last two models (5- and 6-class models) did not produce reliable output and are excluded.
 
 ------------------------------------------------------------------------
 
@@ -334,12 +403,12 @@ locations = cells_title()
     cells_body(
      columns = BF,
      row =  BF > 10),
-    cells_body(
+    cells_body( 
      columns =  T11_VLMR_PValue,
-     row =  T11_VLMR_PValue < .001),
+     row =  ifelse(T11_VLMR_PValue < .001 & lead(T11_VLMR_PValue) > .05, T11_VLMR_PValue < .001, NA)),
     cells_body(
      columns =  BLRT_PValue,
-     row =  BLRT_PValue < .001)
+     row =  ifelse(BLRT_PValue < .001 & lead(BLRT_PValue) > .05, BLRT_PValue < .001, NA))
   )
 )
 
@@ -458,10 +527,13 @@ ggsave(here("figures", "compare_kclass_plot.png"), dpi=300, height=5, width=7, u
 
 ### 3-Class Probability Plot
 
-```{r, fig.height=6, fig.width=10}
-source("plot_lca_function.txt")
+Use the `plot_lca` function provided in the folder to plot the item probability plot. This function requires one argument:
+- `model_name`: The name of the Mplus `readModels` object (e.g., `output_bully$c3_bully.out`)
 
-plot_lca_function(model_name = output_bully$c3_bully.out)
+```{r fig.height=6, fig.width=10}
+source("plot_lca.txt")
+
+plot_lca(model_name = output_bully$c3_bully.out)
 ```
 
 ------------------------------------------------------------------------
@@ -492,8 +564,9 @@ patterns  <- mplusObject(
   ANALYSIS = 
    "estimator = mlr; 
     type = mixture;
-    starts = 200 100; 
-    processors = 10;",
+    starts = 0;
+    processors = 10;
+    optseed = 802779;",
   
   SAVEDATA = 
    "File=savedata.dat;
@@ -509,8 +582,8 @@ patterns  <- mplusObject(
   rdata = df_bully)
 
 patterns_fit <- mplusModeler(patterns,
-                dataout=here("enum", "bully.dat"),
-                modelout=here("enum", "patterns.inp") ,
+                dataout=here("mplus", "bully.dat"),
+                modelout=here("mplus", "patterns.inp") ,
                 check=TRUE, run = TRUE, hashfilename = FALSE)
 ```
 
@@ -522,11 +595,11 @@ Read in observed response pattern data and relabel the columns
 
 ```{r}
 # Read in response frequency data that we just created:
-patterns <- read_table(here("enum", "resp_patterns.dat"),
+patterns <- read_table(here("mplus", "resp_patterns.dat"),
                         col_names=FALSE, na = "*") 
 
 # Extract the column names
-names <- names(readModels(here("enum", "patterns.out"))[['savedata']])
+names <- names(readModels(here("mplus", "patterns.out"))[['savedata']])
 
 # Add the names back to the dataset
 colnames(patterns) <- c("Frequency", names)  
@@ -557,7 +630,7 @@ response_patterns <-  rbind(order_highest[1:5,], table_data)
 Finally, use `{gt}` to make a nicely formatted table
 
 ```{r}
-response_patterns %>% 
+resp_table <- response_patterns %>% 
   gt() %>%
     tab_header(
     title = "Observed Response Patterns",
@@ -600,11 +673,19 @@ response_patterns %>%
   ) %>% 
   cols_align(align = "center") %>% 
   opt_align_table_header(align = "left") %>% 
-  gt::tab_options(table.font.names = "Times New Roman") %>% 
-  gtsave("figures/response_patterns.png")
+  gt::tab_options(table.font.names = "Times New Roman")
+
+resp_table
 ```
 
-![](figures/response_patterns.png)
+------------------------------------------------------------------------
+
+Save table:
+
+```{r}
+gtsave(resp_table, here("figures","resp_table.png"))
+
+```
 
 ------------------------------------------------------------------------
 
@@ -625,7 +706,7 @@ classification  <- mplusObject(
   ANALYSIS =
     "estimator = ml;
     type = mixture;
-    starts = 200 100; 
+    starts = 0; 
     processors = 10;
     stseed = 802779;
     bootstrap = 1000;",
@@ -637,7 +718,7 @@ classification  <- mplusObject(
   %OVERALL%
   [C#1](c1);
   
-  [C#2](C2)
+  [C#2](C2);
 
   Model Constraint:
   New(p1 p2 p3);
@@ -647,14 +728,14 @@ classification  <- mplusObject(
   p3 = 1/(1+exp(c1)+exp(c2));",
 
   
-  OUTPUT = "sampstat tech11 tech14 cinterval(bcbootstrap)",
+  OUTPUT = "cinterval(bcbootstrap)",
   
   usevariables = colnames(df_bully),
   rdata = df_bully)
 
 classification_fit <- mplusModeler(classification,
-                dataout=here("enum", "bully.dat"),
-                modelout=here("enum", "class.inp") ,
+                dataout=here("mplus", "bully.dat"),
+                modelout=here("mplus", "class.inp") ,
                 check=TRUE, run = TRUE, hashfilename = FALSE)
 ```
 
@@ -664,7 +745,7 @@ Read in the 3-class model:
 
 ```{r}
 # Read in the 3-class model and extract information needed
-output_bully <- readModels(here("enum", "class.out"))
+output_bully <- readModels(here("mplus", "class.out"))
 
 # Entropy
 entropy <- c(output_bully$summaries$Entropy, rep(NA, output_bully$summaries$NLatentClasses-1))
@@ -698,7 +779,7 @@ class_table <- data.frame(OCCk, entropy)
 Now, use `{gt}` to make a nicely formatted table
 
 ```{r}
-class_table %>% 
+class_table <- class_table %>% 
   gt() %>%
     tab_header(
     title = "Model Classification Diagnostics for the 3-Class Solution") %>%
@@ -706,24 +787,34 @@ class_table %>%
       model = md("*k*-Class"),
       kclass = md("*k*-Class Proportions"),
       CI = "95% CI",
-      mcaPk = md("*mcaPk*"),
-      avePPk = md("*AvePPk*"),
-      OCCk = md("*OCCk*"),
+      mcaPk = html("McaP<sub>k</sub>"),
+      avePPk = md("AvePP<sub>k</sub>"),
+      OCCk = md("OCC<sub>k</sub>"),
       entropy = "Entropy") %>% 
     sub_missing(7,
               missing_text = "") %>%
     tab_footnote(
     footnote = html(
-      "<i>Note.</i> <i>f</i><sub>r</sub> = response pattern frequency; P<sub><i>k</i></sub> = posterior class probabilities"
+      "<i>Note.</i> McaP<sub>k</sub> = Modal class assignment proportion; AvePP<sub>k</sub> = Average posterior class probabilities; OCC<sub>k</sub> = Odds of correct classification; "
     )
   ) %>% 
   cols_align(align = "center") %>% 
   opt_align_table_header(align = "left") %>% 
-  gt::tab_options(table.font.names = "Times New Roman")%>%
-  gtsave("figures/class_table.png") 
+  gt::tab_options(table.font.names = "Times New Roman")
+
+class_table
 ```
 
-![](figures/class_table.png)
+
+------------------------------------------------------------------------
+
+Save table:
+
+```{r}
+gtsave(class_table, here("figures","class_table.png"))
+
+```
+
 
 ------------------------------------------------------------------------
 

@@ -1,6 +1,6 @@
 Mplus VERSION 8.8
 MUTHEN & MUTHEN
-04/17/2023  12:36 PM
+09/14/2023   2:48 PM
 
 INPUT INSTRUCTIONS
 
@@ -169,6 +169,7 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5099.881  475420           71
            -5099.881  575700           100
            -5099.881  259507           53
+           -5099.881  297518           166
            -5100.272  415502           194
            -5100.842  587946           120
            -5100.842  40340            188
@@ -181,9 +182,11 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5101.155  931874           141
            -5101.316  939709           112
            -5101.332  573096           20
+           -5101.389  354208           196
            -5101.468  263268           165
            -5101.494  164305           128
            -5101.512  124999           96
+           -5101.592  987090           70
            -5101.593  268896           124
            -5101.913  285380           1
            -5101.951  608496           4
@@ -196,13 +199,12 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5103.929  821011           161
            -5104.462  533738           11
            -5104.611  21345            199
-           -5104.857  948615           140
            -5105.945  856536           144
-           -5106.123  723775           97
+           -5106.486  565819           65
            -5107.302  399671           13
            -5107.624  462953           7
 
-65 perturbed starting value run(s) did not converge or were rejected in the third stage.
+63 perturbed starting value run(s) did not converge or were rejected in the third stage.
 
 
 
@@ -864,9 +866,9 @@ The following plots are available:
   Scatterplots (sample values)
   Sample proportions and estimated probabilities
 
-     Beginning Time:  12:36:57
-        Ending Time:  12:37:09
-       Elapsed Time:  00:00:12
+     Beginning Time:  14:48:22
+        Ending Time:  14:48:36
+       Elapsed Time:  00:00:14
 
 
 
