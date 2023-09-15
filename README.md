@@ -682,7 +682,7 @@ classification  <- mplusObject(
     type = mixture;
     starts = 0; 
     processors = 10;
-    stseed = 802779;
+    optseed = 802779;
     bootstrap = 1000;",
   
   MODEL =
