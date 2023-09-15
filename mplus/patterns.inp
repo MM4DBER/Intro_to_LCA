@@ -16,7 +16,7 @@ estimator = mlr;
     processors = 10;
     optseed = 802779;
 OUTPUT:
-residual patterns tech10 tech11 tech14
+residual patterns tech11 tech14
 SAVEDATA:
 File=savedata.dat;
     Save=cprob;

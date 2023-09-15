@@ -267,7 +267,7 @@ lca_enum_fit <- mplusModeler(lca_enum,
 
 ```
 
-**IMPORTANT**: Before moving forward, make sure to open each output document to ensure models were estimated normally. In this example, the last two models (5- and 6-class models) did not produce reliable output and are excluded.
+**IMPORTANT**: Before moving forward, make sure to open each output document to ensure models were estimated normally. 
 
 ------------------------------------------------------------------------
 
@@ -292,8 +292,7 @@ enum_extract <- LatexSummaryTable(
     "Observations"
   ),
   sortBy = "Title"
-) %>% 
-  slice_head(n=4) # Select first four models (Class 1 through 4)
+) 
 
 
 allFit <- enum_extract %>%
@@ -357,33 +356,33 @@ locations = cells_title()
       ),
     locations = list(cells_body(
      columns = BIC,
-     row = BIC == min(BIC[c(1:4)]) # Change this to the number of classes you estimated
+     row = BIC == min(BIC[c(1:6)]) # Change this to the number of classes you are evaluating
     ),
     cells_body(
      columns = aBIC,
-     row = aBIC == min(aBIC[1:4])
+     row = aBIC == min(aBIC[1:6])
     ),
     cells_body(
      columns = CAIC,
-     row = CAIC == min(CAIC[1:4])
+     row = CAIC == min(CAIC[1:6])
     ),
     cells_body(
      columns = AWE,
-     row = AWE == min(AWE[1:4])
+     row = AWE == min(AWE[1:6])
     ),
     cells_body(
      columns = cmPk,
-     row =  cmPk == max(cmPk[1:4])
+     row =  cmPk == max(cmPk[1:6])
      ),    
     cells_body(
      columns = BF,
      row =  BF > 10),
     cells_body( 
      columns =  T11_VLMR_PValue,
-     row =  ifelse(T11_VLMR_PValue < .001 & lead(T11_VLMR_PValue) > .05, T11_VLMR_PValue < .001, NA)),
+     row =  ifelse(T11_VLMR_PValue < .05 & lead(T11_VLMR_PValue) > .05, T11_VLMR_PValue < .05, NA)),
     cells_body(
      columns =  BLRT_PValue,
-     row =  ifelse(BLRT_PValue < .001 & lead(BLRT_PValue) > .05, BLRT_PValue < .001, NA))
+     row =  ifelse(BLRT_PValue < .05 & lead(BLRT_PValue) > .05, BLRT_PValue < .05, NA))
   )
 )
 
@@ -551,7 +550,7 @@ patterns  <- mplusObject(
     
     response is resp_patterns.dat;",
   
-  OUTPUT = "residual patterns tech10 tech11 tech14",
+  OUTPUT = "residual patterns tech11 tech14",
   
   usevariables = colnames(df_bully),
   rdata = df_bully)
@@ -574,7 +573,7 @@ patterns <- read_table(here("mplus", "resp_patterns.dat"),
                         col_names=FALSE, na = "*") 
 
 # Extract the column names
-names <- names(readModels(here("mplus", "patterns.out"))[['savedata']])
+names <- names(readModels(here("mplus", "patterns.out"))[['savedata']]) 
 
 # Add the names back to the dataset
 colnames(patterns) <- c("Frequency", names)  
@@ -713,6 +712,8 @@ classification_fit <- mplusModeler(classification,
                 modelout=here("mplus", "class.inp") ,
                 check=TRUE, run = TRUE, hashfilename = FALSE)
 ```
+
+*Note*: Ensure that the classes did not shift during this step (i.g., Class 1 in the enumeration run is now Class 4). Evaluate output and compare the class counts and proportions for the latent classes. Using the OPTSEED function ensures replication of the best loglikelihood value run.
 
 ------------------------------------------------------------------------
 

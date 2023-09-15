@@ -1,6 +1,6 @@
 Mplus VERSION 8.8
 MUTHEN & MUTHEN
-09/14/2023   2:47 PM
+09/14/2023   5:39 PM
 
 INPUT INSTRUCTIONS
 
@@ -169,13 +169,13 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5111.757  120506           45
            -5111.757  576220           115
            -5111.757  192071           142
+           -5111.757  392418           28
            -5111.757  618000           190
            -5111.757  195873           6
            -5111.757  190339           102
            -5111.757  533738           11
            -5111.757  246261           38
            -5111.757  100874           108
-           -5111.757  392418           28
            -5111.757  76974            16
            -5111.757  303634           169
            -5111.757  373505           88
@@ -186,9 +186,11 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5111.757  987090           70
            -5111.759  285380           1
            -5111.759  414284           158
+           -5111.759  12477            155
            -5112.253  784664           75
            -5112.253  802779           122
            -5112.253  127215           9
+           -5113.910  695155           150
            -5115.532  715561           125
            -5115.532  476498           179
            -5115.532  856536           144
@@ -197,13 +199,11 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5115.532  509733           130
            -5115.532  751054           117
            -5115.532  118421           139
-           -5115.532  68985            17
            -5115.532  575700           100
            -5115.532  535804           111
            -5115.532  496881           192
            -5115.538  573096           20
            -5115.884  846194           93
-           -5116.981  93468            3
            -5116.981  963053           43
            -5117.829  247224           94
            -5117.829  399671           13
@@ -666,9 +666,9 @@ The following plots are available:
   Scatterplots (sample values)
   Sample proportions and estimated probabilities
 
-     Beginning Time:  14:47:48
-        Ending Time:  14:48:08
-       Elapsed Time:  00:00:20
+     Beginning Time:  17:39:38
+        Ending Time:  17:40:00
+       Elapsed Time:  00:00:22
 
 
 

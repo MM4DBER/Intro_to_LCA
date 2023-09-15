@@ -3,12 +3,12 @@ title: "Latent Class Analysis Enumeration"
 author: "IMMERSE Training Team"
 date: "Updated: `r format(Sys.time(), '%B %d, %Y')`"
 output:
+  pdf_document:
+    toc: yes
   html_document:
     toc: yes
     toc_float: yes
     theme: flatly
-  pdf_document:
-    toc: yes
 editor_options: 
   markdown: 
     wrap: sentence
@@ -91,8 +91,8 @@ tribble(
   "report_race",  "Number of students harassed or bullied on the basis of race, color, or national origin",  "0 = No reported incidents, 1 = At least one reported incident",
   "report_sex", "Number of students harassed or bullied on the basis of sex",  "0 = No reported incidents, 1 = At least one reported incident",
   "counselors_fte", "Number of full time equivalent counselors hired as school staff",  "0 = No staff present, 1 = At least one staff present",  
-  "report_sex", "Number of full time equivalent psychologists hired as school staff",  "0 = No staff present, 1 = At least one staff present",
-  "counselors_fte", "Number of full time equivalent law enforcement officers hired as school staff",  "0 = No staff present, 1 = At least one staff present") %>% 
+  "psych_fte", "Number of full time equivalent psychologists hired as school staff",  "0 = No staff present, 1 = At least one staff present",
+  "law_fte", "Number of full time equivalent law enforcement officers hired as school staff",  "0 = No staff present, 1 = At least one staff present") %>% 
 gt() %>% 
   tab_header(
     title = "LCA indicators"  # Add a title
@@ -293,7 +293,7 @@ lca_enum_fit <- mplusModeler(lca_enum,
 
 ```
 
-**IMPORTANT**: Before moving forward, make sure to open each output document to ensure models were estimated normally. In this example, the last two models (5- and 6-class models) did not produce reliable output and are excluded.
+**IMPORTANT**: Before moving forward, make sure to open each output document to ensure models were estimated normally. 
 
 ------------------------------------------------------------------------
 
@@ -318,9 +318,7 @@ enum_extract <- LatexSummaryTable(
     "Observations"
   ),
   sortBy = "Title"
-) %>% 
-  slice_head(n=4) # Select first four models (Class 1 through 4)
-
+) 
 
 
 allFit <- enum_extract %>%
@@ -384,33 +382,33 @@ locations = cells_title()
       ),
     locations = list(cells_body(
      columns = BIC,
-     row = BIC == min(BIC[c(1:4)]) # Change this to the number of classes you are evaluating
+     row = BIC == min(BIC[c(1:6)]) # Change this to the number of classes you are evaluating
     ),
     cells_body(
      columns = aBIC,
-     row = aBIC == min(aBIC[1:4])
+     row = aBIC == min(aBIC[1:6])
     ),
     cells_body(
      columns = CAIC,
-     row = CAIC == min(CAIC[1:4])
+     row = CAIC == min(CAIC[1:6])
     ),
     cells_body(
      columns = AWE,
-     row = AWE == min(AWE[1:4])
+     row = AWE == min(AWE[1:6])
     ),
     cells_body(
      columns = cmPk,
-     row =  cmPk == max(cmPk[1:4])
+     row =  cmPk == max(cmPk[1:6])
      ),    
     cells_body(
      columns = BF,
      row =  BF > 10),
     cells_body( 
      columns =  T11_VLMR_PValue,
-     row =  ifelse(T11_VLMR_PValue < .001 & lead(T11_VLMR_PValue) > .05, T11_VLMR_PValue < .001, NA)),
+     row =  ifelse(T11_VLMR_PValue < .05 & lead(T11_VLMR_PValue) > .05, T11_VLMR_PValue < .05, NA)),
     cells_body(
      columns =  BLRT_PValue,
-     row =  ifelse(BLRT_PValue < .001 & lead(BLRT_PValue) > .05, BLRT_PValue < .001, NA))
+     row =  ifelse(BLRT_PValue < .05 & lead(BLRT_PValue) > .05, BLRT_PValue < .05, NA))
   )
 )
 
@@ -578,7 +576,7 @@ patterns  <- mplusObject(
     
     response is resp_patterns.dat;",
   
-  OUTPUT = "residual patterns tech10 tech11 tech14",
+  OUTPUT = "residual patterns tech11 tech14",
   
   usevariables = colnames(df_bully),
   rdata = df_bully)
@@ -601,7 +599,7 @@ patterns <- read_table(here("mplus", "resp_patterns.dat"),
                         col_names=FALSE, na = "*") 
 
 # Extract the column names
-names <- names(readModels(here("mplus", "patterns.out"))[['savedata']])
+names <- names(readModels(here("mplus", "patterns.out"))[['savedata']]) 
 
 # Add the names back to the dataset
 colnames(patterns) <- c("Frequency", names)  
