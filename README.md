@@ -1,14 +1,16 @@
-## Video tutorial repository: "lca_enum"
+## Video tutorial repository: "Intro_to_LCA"
 
 - - -
 
-### An Introduction to R and RStudio
+### Introduction to Latent Class Analysis (LCA) with MplusAutomation
 
-#### IMMERSE Project: Institute of Mixture Modeling for Equity-Oriented Researchers, Scholars, and Educators
+*Enumeration, Summarizing Results, Exploring Response Patterns*
 
-#### Video Series Funded by IES Training Grant (R305B220021)
+#### Mixture Modeling for Discipline Based Education Researchers (MM4DBER) is an NSF funded training grant to support STEM Education scholars in integrating mixture modeling into their research.
 
-#### *Dina Arch*
+#### Video Series Funded by IES Training Grant and tought by Dina Arch
+
+*MM4DEBER Training Team*
 
 - - -
 

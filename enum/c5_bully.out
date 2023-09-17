@@ -1,6 +1,6 @@
 Mplus VERSION 8.6 (Mac)
 MUTHEN & MUTHEN
-09/17/2023   1:57 PM
+09/17/2023   2:09 PM
 
 INPUT INSTRUCTIONS
 
@@ -170,9 +170,9 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5105.589  21345            199
            -5105.589  915642           40
            -5105.589  476498           179
-           -5105.589  345070           114
            -5105.589  608496           4
            -5105.589  383986           159
+           -5105.589  345070           114
            -5105.661  263268           165
            -5105.791  794236           127
            -5105.791  533738           11
@@ -181,6 +181,7 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5105.799  576220           115
            -5105.799  587946           120
            -5105.799  284109           82
+           -5106.748  131856           90
            -5106.748  318230           46
            -5106.983  164305           128
            -5107.172  467339           66
@@ -196,10 +197,11 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5108.860  392418           28
            -5110.474  107446           12
            -5110.831  575700           100
+           -5111.743  728038           177
 
 Unperturbed starting value run did not converge or was rejected in the third stage.
 
-69 perturbed starting value run(s) did not converge or were rejected in the third stage.
+67 perturbed starting value run(s) did not converge or were rejected in the third stage.
 
 
 
@@ -1259,8 +1261,8 @@ The following plots are available:
   Scatterplots (sample values)
   Sample proportions and estimated probabilities
 
-     Beginning Time:  13:57:25
-        Ending Time:  13:57:27
+     Beginning Time:  14:09:02
+        Ending Time:  14:09:04
        Elapsed Time:  00:00:02
 
 
