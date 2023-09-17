@@ -14,19 +14,13 @@
 
 - - -
 
-# IMMERSE Project
+## MM4DEBER Project
 
-![](figures/IESNewLogo.jpg)
+#### Download project materials here: [GitHub Repository](https://github.com/MM4DBER/Intro_to_LCA)
 
-The Institute of Mixture Modeling for Equity-Oriented Researchers, Scholars, and Educators (IMMERSE) is an IES funded training grant (R305B220021) to support Education scholars in integrating mixture modeling into their research.
+#### Follow along: [Video Tutorial](https://www.youtube.com/watch?v=fPpcScLZFRI)
 
--   Please [visit our website](https://immerse.education.ucsb.edu/) to learn more and apply for the year-long fellowship.
-
--   Follow us on [Twitter](https://twitter.com/IMMERSE_UCSB)!
-
-How to reference this walkthrough: *This work was supported by the IMMERSE Project* (IES - 305B220021)
-
-Visit our [GitHub](https://github.com/immerse-ucsb) account to download the materials needed for this walkthrough.
+#### Return to landing page here: [MM4DBER Landing Page](https://mm4dber.github.io/)
 
 ------------------------------------------------------------------------
 
