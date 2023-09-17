@@ -1,13 +1,13 @@
-Mplus VERSION 8.8
+Mplus VERSION 8.6 (Mac)
 MUTHEN & MUTHEN
-09/14/2023   7:52 PM
+09/17/2023   1:57 PM
 
 INPUT INSTRUCTIONS
 
   TITLE:
   C3 LCA - Calculated k-Class 95% CI
   DATA:
-  FILE = "C:/Users/dnajiarch/Box/IES_IMMERSE/Training Materials/lca_enum/mplus/bully.dat";
+  FILE = "/Users/agarber/github/Intro_to_LCA/mplus/bully.dat";
 
   VARIABLE:
   NAMES = report_dis report_race report_sex counselors_fte psych_fte law_fte;
@@ -108,7 +108,7 @@ Random Starts Specifications
 Link                                                         LOGIT
 
 Input data file(s)
-  C:/Users/dnajiarch/Box/IES_IMMERSE/Training Materials/lca_enum/mplus/bully.dat
+  /Users/agarber/github/Intro_to_LCA/mplus/bully.dat
 Input data format  FREE
 
 
@@ -520,9 +520,9 @@ Latent Class 3
     Category 2       0.000       0.000       0.000       0.019       0.042       0.049       0.057
 
 
-     Beginning Time:  19:52:05
-        Ending Time:  19:52:18
-       Elapsed Time:  00:00:13
+     Beginning Time:  13:57:33
+        Ending Time:  13:57:38
+       Elapsed Time:  00:00:05
 
 
 
@@ -535,4 +535,4 @@ Fax: (310) 391-8971
 Web: www.StatModel.com
 Support: Support@StatModel.com
 
-Copyright (c) 1998-2022 Muthen & Muthen
+Copyright (c) 1998-2021 Muthen & Muthen

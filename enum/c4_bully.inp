@@ -1,7 +1,7 @@
 TITLE:
 4-Class
 DATA:
-FILE = "C:/Users/dnajiarch/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat";
+FILE = "/Users/agarber/github/Intro_to_LCA/enum/bully.dat";
  
 VARIABLE:
 NAMES = report_dis report_race report_sex counselors_fte psych_fte law_fte; 

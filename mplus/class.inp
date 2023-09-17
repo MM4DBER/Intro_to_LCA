@@ -1,7 +1,7 @@
 TITLE:
 C3 LCA - Calculated k-Class 95% CI
 DATA:
-FILE = "C:/Users/dnajiarch/Box/IES_IMMERSE/Training Materials/lca_enum/mplus/bully.dat";
+FILE = "/Users/agarber/github/Intro_to_LCA/mplus/bully.dat";
  
 VARIABLE:
 NAMES = report_dis report_race report_sex counselors_fte psych_fte law_fte; 

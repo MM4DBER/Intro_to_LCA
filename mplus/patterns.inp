@@ -1,7 +1,7 @@
 TITLE:
 C3 LCA - Save response patterns
 DATA:
-FILE = "C:/Users/dnajiarch/Box/IES_IMMERSE/Training Materials/lca_enum/mplus/bully.dat";
+FILE = "/Users/agarber/github/Intro_to_LCA/mplus/bully.dat";
  
 VARIABLE:
 NAMES = report_dis report_race report_sex counselors_fte psych_fte law_fte; 
@@ -20,7 +20,5 @@ residual patterns tech11 tech14
 SAVEDATA:
 File=savedata.dat;
     Save=cprob;
-    
-    ! Code to save response frequency data 
-    
     response is resp_patterns.dat;
+   !!! Code to save response frequency data !!!

@@ -1,13 +1,13 @@
-Mplus VERSION 8.8
+Mplus VERSION 8.6 (Mac)
 MUTHEN & MUTHEN
-09/14/2023   5:39 PM
+09/17/2023   1:57 PM
 
 INPUT INSTRUCTIONS
 
   TITLE:
   1-Class
   DATA:
-  FILE = "C:/Users/dnajiarch/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat";
+  FILE = "/Users/agarber/github/Intro_to_LCA/enum/bully.dat";
 
   VARIABLE:
   NAMES = report_dis report_race report_sex counselors_fte psych_fte law_fte;
@@ -110,7 +110,7 @@ Random Starts Specifications
 Link                                                         LOGIT
 
 Input data file(s)
-  C:/Users/dnajiarch/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat
+  /Users/agarber/github/Intro_to_LCA/enum/bully.dat
 Input data format  FREE
 
 
@@ -181,67 +181,57 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5443.409  371246           101
            -5443.409  635245           121
            -5443.409  603842           61
-           -5443.409  285380           1
-           -5443.409  93468            3
-           -5443.409  27071            15
            -5443.409  164305           128
-           -5443.409  40340            188
            -5443.409  311214           64
-           -5443.409  264081           186
            -5443.409  814975           129
            -5443.409  509733           130
+           -5443.409  40340            188
            -5443.409  626891           32
-           -5443.409  991329           182
-           -5443.409  131856           90
+           -5443.409  264081           186
            -5443.409  565819           65
            -5443.409  468036           131
            -5443.409  313407           132
+           -5443.409  991329           182
+           -5443.409  131856           90
            -5443.409  467339           66
            -5443.409  321390           133
            -5443.409  903369           134
-           -5443.409  462953           7
            -5443.409  749453           33
            -5443.409  789985           67
            -5443.409  437181           135
-           -5443.409  783165           170
-           -5443.409  303634           169
-           -5443.409  636396           168
            -5443.409  232559           136
-           -5443.409  297518           166
-           -5443.409  263268           165
-           -5443.409  215353           164
            -5443.409  405079           68
-           -5443.409  76974            16
            -5443.409  685657           69
            -5443.409  341041           34
+           -5443.409  783165           170
+           -5443.409  303634           169
            -5443.409  987090           70
            -5443.409  192071           142
-           -5443.409  939021           8
-           -5443.409  68985            17
+           -5443.409  297518           166
+           -5443.409  263268           165
            -5443.409  830392           35
            -5443.409  475420           71
            -5443.409  22089            143
            -5443.409  856536           144
            -5443.409  783110           72
-           -5443.409  695155           150
            -5443.409  788796           145
            -5443.409  369602           146
            -5443.409  260601           36
            -5443.409  863094           147
            -5443.409  51375            148
            -5443.409  417035           149
-           -5443.409  851945           18
+           -5443.409  695155           150
            -5443.409  966014           37
            -5443.409  246261           38
-           -5443.409  608496           4
            -5443.409  645664           39
            -5443.409  913639           162
            -5443.409  915642           40
            -5443.409  484501           163
+           -5443.409  215353           164
            -5443.409  284109           82
-           -5443.409  unperturbed      0
            -5443.409  268217           83
            -5443.409  654136           167
+           -5443.409  636396           168
            -5443.409  782200           84
            -5443.409  352277           42
            -5443.409  569833           85
@@ -263,7 +253,6 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5443.409  202790           198
            -5443.409  568859           49
            -5443.409  761633           50
-           -5443.409  751153           110
            -5443.409  190339           102
            -5443.409  292884           103
            -5443.409  70118            104
@@ -272,6 +261,17 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5443.409  25127            107
            -5443.409  100874           108
            -5443.409  466971           109
+           -5443.409  751153           110
+           -5443.409  285380           1
+           -5443.409  27071            15
+           -5443.409  93468            3
+           -5443.409  462953           7
+           -5443.409  76974            16
+           -5443.409  unperturbed      0
+           -5443.409  68985            17
+           -5443.409  939021           8
+           -5443.409  851945           18
+           -5443.409  608496           4
 
 
 
@@ -432,8 +432,107 @@ Latent Class 1
 RESIDUAL OUTPUT
 
 
-     RESIDUAL OUTPUT IS NOT AVAILABLE FOR THIS MODEL.  ADDITIONAL OUTPUT FOR
-     CATEGORICAL, COUNT, AND NOMINAL VARIABLES MAY BE AVAILABLE USING TECH10.
+     UNIVARIATE DISTRIBUTION FIT FOR CLASS 1
+
+     Variable          Observed      Estimated      Residual (Obs.-Est.)    Stand. Residual
+     REPORT_D
+       Category 1        0.958          0.958                  0.000                0.000
+       Category 2        0.043          0.042                  0.000                0.000
+     REPORT_R
+       Category 1        0.897          0.897                  0.000                0.000
+       Category 2        0.103          0.103                  0.000                0.000
+     REPORT_S
+       Category 1        0.830          0.830                  0.000                0.000
+       Category 2        0.170          0.170                  0.000                0.000
+     COUNSELO
+       Category 1        0.540          0.540                  0.000                0.000
+       Category 2        0.460          0.460                  0.000                0.000
+     PSYCH_FT
+       Category 1        0.526          0.526                  0.000                0.000
+       Category 2        0.474          0.474                  0.000                0.000
+     LAW_FTE
+       Category 1        0.875          0.875                  0.000                0.000
+       Category 2        0.126          0.125                  0.000                0.000
+
+
+     BIVARIATE DISTRIBUTIONS FIT FOR CLASS 1
+
+     Variable       Variable          Observed     Estimated    Residual (Obs.-Est.)  Stand. Residual
+     REPORT_D       REPORT_R
+       Category 1     Category 1        0.880       0.859             0.022            2.796
+       Category 1     Category 2        0.077       0.099            -0.022           -3.265
+       Category 2     Category 1        0.017       0.038            -0.022           -5.084
+       Category 2     Category 2        0.026       0.004             0.022           14.746
+     REPORT_D       REPORT_S
+       Category 1     Category 1        0.809       0.795             0.015            1.647
+       Category 1     Category 2        0.148       0.163            -0.015           -1.802
+       Category 2     Category 1        0.021       0.035            -0.015           -3.606
+       Category 2     Category 2        0.022       0.007             0.015            7.854
+     REPORT_D       COUNSELO
+       Category 1     Category 1        0.523       0.518             0.005            0.453
+       Category 1     Category 2        0.434       0.440            -0.006           -0.509
+       Category 2     Category 1        0.018       0.023            -0.005           -1.572
+       Category 2     Category 2        0.025       0.020             0.006            1.891
+     REPORT_D       PSYCH_FT
+       Category 1     Category 1        0.506       0.503             0.002            0.193
+       Category 1     Category 2        0.451       0.454            -0.003           -0.252
+       Category 2     Category 1        0.014       0.022            -0.009           -2.632
+       Category 2     Category 2        0.029       0.020             0.009            2.976
+     REPORT_D       LAW_FTE
+       Category 1     Category 1        0.841       0.837             0.004            0.491
+       Category 1     Category 2        0.116       0.120            -0.005           -0.638
+       Category 2     Category 1        0.032       0.037            -0.005           -1.246
+       Category 2     Category 2        0.011       0.005             0.006            3.595
+     REPORT_R       REPORT_S
+       Category 1     Category 1        0.787       0.745             0.042            4.386
+       Category 1     Category 2        0.110       0.152            -0.042           -5.321
+       Category 2     Category 1        0.043       0.085            -0.042           -6.842
+       Category 2     Category 2        0.060       0.018             0.042           14.585
+     REPORT_R       COUNSELO
+       Category 1     Category 1        0.488       0.485             0.003            0.248
+       Category 1     Category 2        0.408       0.412            -0.004           -0.381
+       Category 2     Category 1        0.053       0.056            -0.003           -0.581
+       Category 2     Category 2        0.052       0.047             0.004            0.926
+     REPORT_R       PSYCH_FT
+       Category 1     Category 1        0.482       0.472             0.010            0.910
+       Category 1     Category 2        0.414       0.425            -0.012           -1.062
+       Category 2     Category 1        0.038       0.054            -0.017           -3.301
+       Category 2     Category 2        0.067       0.049             0.018            3.794
+     REPORT_R       LAW_FTE
+       Category 1     Category 1        0.793       0.784             0.009            0.961
+       Category 1     Category 2        0.102       0.113            -0.010           -1.452
+       Category 2     Category 1        0.080       0.090            -0.010           -1.571
+       Category 2     Category 2        0.024       0.013             0.011            4.545
+     REPORT_S       COUNSELO
+       Category 1     Category 1        0.471       0.449             0.022            2.013
+       Category 1     Category 2        0.357       0.381            -0.025           -2.277
+       Category 2     Category 1        0.069       0.092            -0.022           -3.499
+       Category 2     Category 2        0.103       0.078             0.025            4.156
+     REPORT_S       PSYCH_FT
+       Category 1     Category 1        0.462       0.436             0.026            2.363
+       Category 1     Category 2        0.365       0.394            -0.029           -2.638
+       Category 2     Category 1        0.057       0.089            -0.033           -5.134
+       Category 2     Category 2        0.116       0.081             0.035            5.808
+     REPORT_S       LAW_FTE
+       Category 1     Category 1        0.742       0.726             0.016            1.582
+       Category 1     Category 2        0.086       0.104            -0.018           -2.653
+       Category 2     Category 1        0.132       0.149            -0.017           -2.137
+       Category 2     Category 2        0.041       0.021             0.019            5.986
+     COUNSELO       PSYCH_FT
+       Category 1     Category 1        0.318       0.284             0.034            3.373
+       Category 1     Category 2        0.223       0.256            -0.033           -3.401
+       Category 2     Category 1        0.208       0.242            -0.034           -3.554
+       Category 2     Category 2        0.251       0.218             0.033            3.596
+     COUNSELO       LAW_FTE
+       Category 1     Category 1        0.505       0.473             0.032            2.916
+       Category 1     Category 2        0.035       0.068            -0.032           -5.789
+       Category 2     Category 1        0.369       0.402            -0.032           -2.969
+       Category 2     Category 2        0.090       0.058             0.032            6.245
+     PSYCH_FT       LAW_FTE
+       Category 1     Category 1        0.490       0.460             0.030            2.704
+       Category 1     Category 2        0.036       0.066            -0.030           -5.428
+       Category 2     Category 1        0.385       0.415            -0.030           -2.753
+       Category 2     Category 2        0.090       0.060             0.030            5.732
 
 
 PLOT INFORMATION
@@ -444,9 +543,9 @@ The following plots are available:
   Scatterplots (sample values)
   Sample proportions and estimated probabilities
 
-     Beginning Time:  17:39:11
-        Ending Time:  17:39:19
-       Elapsed Time:  00:00:08
+     Beginning Time:  13:57:17
+        Ending Time:  13:57:18
+       Elapsed Time:  00:00:01
 
 
 
@@ -459,4 +558,4 @@ Fax: (310) 391-8971
 Web: www.StatModel.com
 Support: Support@StatModel.com
 
-Copyright (c) 1998-2022 Muthen & Muthen
+Copyright (c) 1998-2021 Muthen & Muthen

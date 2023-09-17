@@ -1,13 +1,13 @@
-Mplus VERSION 8.8
+Mplus VERSION 8.6 (Mac)
 MUTHEN & MUTHEN
-09/14/2023   5:39 PM
+09/17/2023   1:57 PM
 
 INPUT INSTRUCTIONS
 
   TITLE:
   4-Class
   DATA:
-  FILE = "C:/Users/dnajiarch/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat";
+  FILE = "/Users/agarber/github/Intro_to_LCA/enum/bully.dat";
 
   VARIABLE:
   NAMES = report_dis report_race report_sex counselors_fte psych_fte law_fte;
@@ -104,7 +104,7 @@ Random Starts Specifications
 Link                                                         LOGIT
 
 Input data file(s)
-  C:/Users/dnajiarch/Box/IES_IMMERSE/Training Materials/lca_enum/enum/bully.dat
+  /Users/agarber/github/Intro_to_LCA/enum/bully.dat
 Input data format  FREE
 
 
@@ -167,8 +167,8 @@ RANDOM STARTS RESULTS RANKED FROM THE BEST TO THE WORST LOGLIKELIHOOD VALUES
 Final stage loglikelihood values at local maxima, seeds, and initial stage start numbers:
 
            -5111.757  120506           45
-           -5111.757  576220           115
            -5111.757  192071           142
+           -5111.757  576220           115
            -5111.757  392418           28
            -5111.757  618000           190
            -5111.757  195873           6
@@ -204,12 +204,14 @@ Final stage loglikelihood values at local maxima, seeds, and initial stage start
            -5115.532  496881           192
            -5115.538  573096           20
            -5115.884  846194           93
+           -5116.981  966014           37
            -5116.981  963053           43
            -5117.829  247224           94
            -5117.829  399671           13
            -5117.829  728038           177
+           -5118.041  551639           55
 
-58 perturbed starting value run(s) did not converge or were rejected in the third stage.
+56 perturbed starting value run(s) did not converge or were rejected in the third stage.
 
 
 
@@ -600,8 +602,416 @@ Latent Class 3 Compared to Latent Class 4
 RESIDUAL OUTPUT
 
 
-     RESIDUAL OUTPUT IS NOT AVAILABLE FOR THIS MODEL.  ADDITIONAL OUTPUT FOR
-     CATEGORICAL, COUNT, AND NOMINAL VARIABLES MAY BE AVAILABLE USING TECH10.
+     UNIVARIATE DISTRIBUTION FIT FOR CLASS 1
+
+     Variable          Observed      Estimated      Residual (Obs.-Est.)    Stand. Residual
+     REPORT_D
+       Category 1        0.984          0.984                  0.000                0.000
+       Category 2        0.016          0.016                  0.000                0.000
+     REPORT_R
+       Category 1        1.000          1.000                  0.000               -0.006
+       Category 2        0.000          0.000                  0.000                0.006
+     REPORT_S
+       Category 1        0.796          0.796                  0.000                0.000
+       Category 2        0.204          0.204                  0.000                0.000
+     COUNSELO
+       Category 1        0.000          0.000                  0.000                0.007
+       Category 2        1.000          1.000                  0.000               -0.007
+     PSYCH_FT
+       Category 1        0.243          0.243                  0.000                0.000
+       Category 2        0.757          0.757                  0.000                0.000
+     LAW_FTE
+       Category 1        0.744          0.744                  0.000                0.000
+       Category 2        0.256          0.256                  0.000                0.000
+
+
+     BIVARIATE DISTRIBUTIONS FIT FOR CLASS 1
+
+     Variable       Variable          Observed     Estimated    Residual (Obs.-Est.)  Stand. Residual
+     REPORT_D       REPORT_R
+       Category 1     Category 1        0.984       0.984             0.000            0.000
+       Category 1     Category 2        0.000       0.000             0.000            0.006
+       Category 2     Category 1        0.016       0.016             0.000            0.000
+       Category 2     Category 2        0.000       0.000             0.000            0.000
+     REPORT_D       REPORT_S
+       Category 1     Category 1        0.783       0.783             0.000           -0.008
+       Category 1     Category 2        0.201       0.201             0.000            0.008
+       Category 2     Category 1        0.013       0.013             0.000            0.027
+       Category 2     Category 2        0.003       0.003             0.000           -0.054
+     REPORT_D       COUNSELO
+       Category 1     Category 1        0.000       0.000             0.000            0.007
+       Category 1     Category 2        0.983       0.984             0.000           -0.042
+       Category 2     Category 1        0.000       0.000             0.000            0.000
+       Category 2     Category 2        0.017       0.016             0.000            0.042
+     REPORT_D       PSYCH_FT
+       Category 1     Category 1        0.234       0.240            -0.005           -0.298
+       Category 1     Category 2        0.749       0.744             0.005            0.277
+       Category 2     Category 1        0.004       0.004             0.000            0.075
+       Category 2     Category 2        0.012       0.012             0.000            0.016
+     REPORT_D       LAW_FTE
+       Category 1     Category 1        0.731       0.732            -0.001           -0.051
+       Category 1     Category 2        0.252       0.252             0.001            0.040
+       Category 2     Category 1        0.013       0.012             0.001            0.131
+       Category 2     Category 2        0.004       0.004             0.000           -0.140
+     REPORT_R       REPORT_S
+       Category 1     Category 1        0.796       0.796             0.000            0.000
+       Category 1     Category 2        0.204       0.204             0.000            0.000
+       Category 2     Category 1        0.000       0.000             0.000            0.004
+       Category 2     Category 2        0.000       0.000             0.000            0.002
+     REPORT_R       COUNSELO
+       Category 1     Category 1        0.000       0.000             0.000            0.007
+       Category 1     Category 2        1.000       1.000             0.000           -0.013
+       Category 2     Category 1        0.000       0.000             0.000            0.000
+       Category 2     Category 2        0.000       0.000             0.000            0.006
+     REPORT_R       PSYCH_FT
+       Category 1     Category 1        0.238       0.243            -0.005           -0.286
+       Category 1     Category 2        0.762       0.757             0.005            0.286
+       Category 2     Category 1        0.000       0.000             0.000            0.002
+       Category 2     Category 2        0.000       0.000             0.000            0.004
+     REPORT_R       LAW_FTE
+       Category 1     Category 1        0.744       0.744             0.000           -0.019
+       Category 1     Category 2        0.256       0.256             0.000            0.019
+       Category 2     Category 1        0.000       0.000             0.000            0.005
+       Category 2     Category 2        0.000       0.000             0.000            0.001
+     REPORT_S       COUNSELO
+       Category 1     Category 1        0.000       0.000             0.000            0.006
+       Category 1     Category 2        0.793       0.796            -0.003           -0.164
+       Category 2     Category 1        0.000       0.000             0.000            0.001
+       Category 2     Category 2        0.207       0.204             0.003            0.164
+     REPORT_S       PSYCH_FT
+       Category 1     Category 1        0.199       0.194             0.006            0.344
+       Category 1     Category 2        0.593       0.602            -0.009           -0.445
+       Category 2     Category 1        0.039       0.050            -0.011           -1.190
+       Category 2     Category 2        0.169       0.155             0.014            0.942
+     REPORT_S       LAW_FTE
+       Category 1     Category 1        0.597       0.592             0.005            0.219
+       Category 1     Category 2        0.196       0.203            -0.007           -0.432
+       Category 2     Category 1        0.147       0.152            -0.005           -0.323
+       Category 2     Category 2        0.060       0.052             0.008            0.819
+     COUNSELO       PSYCH_FT
+       Category 1     Category 1        0.000       0.000             0.000            0.002
+       Category 1     Category 2        0.000       0.000             0.000            0.005
+       Category 2     Category 1        0.243       0.243             0.000            0.000
+       Category 2     Category 2        0.757       0.757             0.000            0.000
+     COUNSELO       LAW_FTE
+       Category 1     Category 1        0.000       0.000             0.000            0.005
+       Category 1     Category 2        0.000       0.000             0.000            0.002
+       Category 2     Category 1        0.744       0.744             0.000            0.000
+       Category 2     Category 2        0.256       0.256             0.000            0.000
+     PSYCH_FT       LAW_FTE
+       Category 1     Category 1        0.171       0.181            -0.010           -0.637
+       Category 1     Category 2        0.073       0.062             0.010            1.015
+       Category 2     Category 1        0.573       0.563             0.010            0.456
+       Category 2     Category 2        0.184       0.193            -0.010           -0.573
+
+
+     UNIVARIATE DISTRIBUTION FIT FOR CLASS 2
+
+     Variable          Observed      Estimated      Residual (Obs.-Est.)    Stand. Residual
+     REPORT_D
+       Category 1        1.000          1.000                  0.000               -0.007
+       Category 2        0.000          0.000                  0.000                0.007
+     REPORT_R
+       Category 1        0.955          0.955                  0.000                0.000
+       Category 2        0.045          0.045                  0.000                0.000
+     REPORT_S
+       Category 1        0.896          0.896                  0.000                0.000
+       Category 2        0.104          0.104                  0.000                0.000
+     COUNSELO
+       Category 1        1.000          1.000                  0.000               -0.008
+       Category 2        0.000          0.000                  0.000                0.008
+     PSYCH_FT
+       Category 1        0.370          0.370                  0.000                0.000
+       Category 2        0.630          0.630                  0.000                0.000
+     LAW_FTE
+       Category 1        0.913          0.913                  0.000                0.000
+       Category 2        0.087          0.087                  0.000                0.000
+
+
+     BIVARIATE DISTRIBUTIONS FIT FOR CLASS 2
+
+     Variable       Variable          Observed     Estimated    Residual (Obs.-Est.)  Stand. Residual
+     REPORT_D       REPORT_R
+       Category 1     Category 1        0.955       0.955             0.000            0.000
+       Category 1     Category 2        0.045       0.045             0.000            0.000
+       Category 2     Category 1        0.000       0.000             0.000            0.007
+       Category 2     Category 2        0.000       0.000             0.000            0.000
+     REPORT_D       REPORT_S
+       Category 1     Category 1        0.896       0.896             0.000            0.000
+       Category 1     Category 2        0.104       0.104             0.000            0.000
+       Category 2     Category 1        0.000       0.000             0.000            0.006
+       Category 2     Category 2        0.000       0.000             0.000            0.001
+     REPORT_D       COUNSELO
+       Category 1     Category 1        1.000       1.000             0.000           -0.015
+       Category 1     Category 2        0.000       0.000             0.000            0.008
+       Category 2     Category 1        0.000       0.000             0.000            0.007
+       Category 2     Category 2        0.000       0.000             0.000            0.000
+     REPORT_D       PSYCH_FT
+       Category 1     Category 1        0.364       0.370            -0.005           -0.271
+       Category 1     Category 2        0.636       0.630             0.005            0.271
+       Category 2     Category 1        0.000       0.000             0.000            0.002
+       Category 2     Category 2        0.000       0.000             0.000            0.005
+     REPORT_D       LAW_FTE
+       Category 1     Category 1        0.912       0.913            -0.001           -0.064
+       Category 1     Category 2        0.088       0.087             0.001            0.064
+       Category 2     Category 1        0.000       0.000             0.000            0.007
+       Category 2     Category 2        0.000       0.000             0.000            0.000
+     REPORT_R       REPORT_S
+       Category 1     Category 1        0.856       0.856             0.000            0.004
+       Category 1     Category 2        0.099       0.099             0.000           -0.005
+       Category 2     Category 1        0.040       0.040             0.000           -0.008
+       Category 2     Category 2        0.005       0.005             0.000            0.022
+     REPORT_R       COUNSELO
+       Category 1     Category 1        0.955       0.955            -0.001           -0.080
+       Category 1     Category 2        0.000       0.000             0.000            0.007
+       Category 2     Category 1        0.045       0.045             0.001            0.080
+       Category 2     Category 2        0.000       0.000             0.000            0.000
+     REPORT_R       PSYCH_FT
+       Category 1     Category 1        0.350       0.353            -0.004           -0.182
+       Category 1     Category 2        0.605       0.602             0.003            0.144
+       Category 2     Category 1        0.015       0.016            -0.002           -0.342
+       Category 2     Category 2        0.031       0.028             0.002            0.364
+     REPORT_R       LAW_FTE
+       Category 1     Category 1        0.870       0.872            -0.002           -0.146
+       Category 1     Category 2        0.084       0.083             0.001            0.117
+       Category 2     Category 1        0.042       0.041             0.001            0.155
+       Category 2     Category 2        0.003       0.004            -0.001           -0.228
+     REPORT_S       COUNSELO
+       Category 1     Category 1        0.895       0.896            -0.002           -0.126
+       Category 1     Category 2        0.000       0.000             0.000            0.007
+       Category 2     Category 1        0.105       0.104             0.002            0.126
+       Category 2     Category 2        0.000       0.000             0.000            0.001
+     REPORT_S       PSYCH_FT
+       Category 1     Category 1        0.321       0.331            -0.011           -0.555
+       Category 1     Category 2        0.574       0.565             0.009            0.449
+       Category 2     Category 1        0.044       0.038             0.005            0.679
+       Category 2     Category 2        0.062       0.066            -0.004           -0.371
+     REPORT_S       LAW_FTE
+       Category 1     Category 1        0.813       0.818            -0.005           -0.330
+       Category 1     Category 2        0.081       0.078             0.004            0.331
+       Category 2     Category 1        0.099       0.095             0.004            0.373
+       Category 2     Category 2        0.006       0.009            -0.003           -0.747
+     COUNSELO       PSYCH_FT
+       Category 1     Category 1        0.370       0.370             0.000            0.000
+       Category 1     Category 2        0.630       0.630             0.000            0.000
+       Category 2     Category 1        0.000       0.000             0.000            0.003
+       Category 2     Category 2        0.000       0.000             0.000            0.005
+     COUNSELO       LAW_FTE
+       Category 1     Category 1        0.913       0.913             0.000            0.000
+       Category 1     Category 2        0.087       0.087             0.000            0.000
+       Category 2     Category 1        0.000       0.000             0.000            0.007
+       Category 2     Category 2        0.000       0.000             0.000            0.001
+     PSYCH_FT       LAW_FTE
+       Category 1     Category 1        0.341       0.337             0.004            0.199
+       Category 1     Category 2        0.028       0.032            -0.004           -0.534
+       Category 2     Category 1        0.572       0.576            -0.004           -0.190
+       Category 2     Category 2        0.059       0.055             0.004            0.414
+
+
+     UNIVARIATE DISTRIBUTION FIT FOR CLASS 3
+
+     Variable          Observed      Estimated      Residual (Obs.-Est.)    Stand. Residual
+     REPORT_D
+       Category 1        0.686          0.686                  0.000                0.000
+       Category 2        0.314          0.314                  0.000                0.000
+     REPORT_R
+       Category 1        0.203          0.203                  0.000                0.000
+       Category 2        0.797          0.797                  0.000                0.000
+     REPORT_S
+       Category 1        0.302          0.302                  0.000                0.000
+       Category 2        0.698          0.698                  0.000                0.000
+     COUNSELO
+       Category 1        0.426          0.426                  0.000                0.000
+       Category 2        0.574          0.574                  0.000                0.000
+     PSYCH_FT
+       Category 1        0.331          0.331                  0.000                0.000
+       Category 2        0.669          0.669                  0.000                0.000
+     LAW_FTE
+       Category 1        0.733          0.733                  0.000                0.000
+       Category 2        0.267          0.267                  0.000                0.000
+
+
+     BIVARIATE DISTRIBUTIONS FIT FOR CLASS 3
+
+     Variable       Variable          Observed     Estimated    Residual (Obs.-Est.)  Stand. Residual
+     REPORT_D       REPORT_R
+       Category 1     Category 1        0.135       0.139            -0.004           -0.174
+       Category 1     Category 2        0.551       0.547             0.004            0.121
+       Category 2     Category 1        0.068       0.064             0.004            0.247
+       Category 2     Category 2        0.246       0.250            -0.004           -0.139
+     REPORT_D       REPORT_S
+       Category 1     Category 1        0.186       0.207            -0.021           -0.757
+       Category 1     Category 2        0.500       0.479             0.021            0.614
+       Category 2     Category 1        0.116       0.095             0.021            1.048
+       Category 2     Category 2        0.198       0.219            -0.021           -0.742
+     REPORT_D       COUNSELO
+       Category 1     Category 1        0.281       0.292            -0.011           -0.364
+       Category 1     Category 2        0.405       0.394             0.011            0.332
+       Category 2     Category 1        0.146       0.134             0.012            0.520
+       Category 2     Category 2        0.168       0.180            -0.012           -0.452
+     REPORT_D       PSYCH_FT
+       Category 1     Category 1        0.255       0.227             0.027            0.952
+       Category 1     Category 2        0.431       0.459            -0.028           -0.808
+       Category 2     Category 1        0.071       0.104            -0.033           -1.555
+       Category 2     Category 2        0.243       0.210             0.033            1.174
+     REPORT_D       LAW_FTE
+       Category 1     Category 1        0.513       0.503             0.010            0.285
+       Category 1     Category 2        0.173       0.183            -0.010           -0.377
+       Category 2     Category 1        0.219       0.230            -0.011           -0.371
+       Category 2     Category 2        0.095       0.084             0.011            0.576
+     REPORT_R       REPORT_S
+       Category 1     Category 1        0.059       0.061            -0.002           -0.116
+       Category 1     Category 2        0.143       0.141             0.002            0.080
+       Category 2     Category 1        0.243       0.241             0.002            0.065
+       Category 2     Category 2        0.555       0.557            -0.002           -0.056
+     REPORT_R       COUNSELO
+       Category 1     Category 1        0.088       0.086             0.002            0.106
+       Category 1     Category 2        0.114       0.116            -0.003           -0.119
+       Category 2     Category 1        0.338       0.340            -0.001           -0.039
+       Category 2     Category 2        0.460       0.458             0.002            0.054
+     REPORT_R       PSYCH_FT
+       Category 1     Category 1        0.068       0.067             0.001            0.047
+       Category 1     Category 2        0.134       0.135            -0.001           -0.062
+       Category 2     Category 1        0.258       0.264            -0.006           -0.198
+       Category 2     Category 2        0.540       0.533             0.007            0.194
+     REPORT_R       LAW_FTE
+       Category 1     Category 1        0.153       0.149             0.005            0.188
+       Category 1     Category 2        0.049       0.054            -0.005           -0.334
+       Category 2     Category 1        0.579       0.585            -0.006           -0.164
+       Category 2     Category 2        0.219       0.213             0.006            0.218
+     REPORT_S       COUNSELO
+       Category 1     Category 1        0.129       0.129             0.001            0.025
+       Category 1     Category 2        0.172       0.173            -0.001           -0.042
+       Category 2     Category 1        0.298       0.297             0.000            0.006
+       Category 2     Category 2        0.401       0.401             0.000            0.009
+     REPORT_S       PSYCH_FT
+       Category 1     Category 1        0.093       0.100            -0.007           -0.342
+       Category 1     Category 2        0.208       0.202             0.006            0.234
+       Category 2     Category 1        0.233       0.231             0.002            0.063
+       Category 2     Category 2        0.466       0.467            -0.001           -0.037
+     REPORT_S       LAW_FTE
+       Category 1     Category 1        0.239       0.221             0.018            0.630
+       Category 1     Category 2        0.062       0.080            -0.018           -0.989
+       Category 2     Category 1        0.493       0.512            -0.019           -0.551
+       Category 2     Category 2        0.206       0.186             0.019            0.727
+     COUNSELO       PSYCH_FT
+       Category 1     Category 1        0.134       0.141            -0.007           -0.308
+       Category 1     Category 2        0.292       0.285             0.007            0.239
+       Category 2     Category 1        0.197       0.190             0.007            0.273
+       Category 2     Category 2        0.377       0.384            -0.007           -0.221
+     COUNSELO       LAW_FTE
+       Category 1     Category 1        0.338       0.312             0.026            0.817
+       Category 1     Category 2        0.088       0.114            -0.026           -1.193
+       Category 2     Category 1        0.395       0.421            -0.026           -0.767
+       Category 2     Category 2        0.179       0.153             0.026            1.051
+     PSYCH_FT       LAW_FTE
+       Category 1     Category 1        0.262       0.243             0.019            0.640
+       Category 1     Category 2        0.069       0.088            -0.019           -0.967
+       Category 2     Category 1        0.472       0.491            -0.019           -0.550
+       Category 2     Category 2        0.197       0.178             0.019            0.718
+
+
+     UNIVARIATE DISTRIBUTION FIT FOR CLASS 4
+
+     Variable          Observed      Estimated      Residual (Obs.-Est.)    Stand. Residual
+     REPORT_D
+       Category 1        0.984          0.984                  0.000                0.000
+       Category 2        0.016          0.016                  0.000                0.000
+     REPORT_R
+       Category 1        0.982          0.982                  0.000                0.000
+       Category 2        0.018          0.018                  0.000                0.000
+     REPORT_S
+       Category 1        0.975          0.975                  0.000                0.000
+       Category 2        0.025          0.025                  0.000                0.000
+     COUNSELO
+       Category 1        0.616          0.616                  0.000                0.000
+       Category 2        0.384          0.384                  0.000                0.000
+     PSYCH_FT
+       Category 1        0.991          0.991                  0.000                0.000
+       Category 2        0.009          0.009                  0.000                0.000
+     LAW_FTE
+       Category 1        1.000          1.000                  0.000               -0.008
+       Category 2        0.000          0.000                  0.000                0.008
+
+
+     BIVARIATE DISTRIBUTIONS FIT FOR CLASS 4
+
+     Variable       Variable          Observed     Estimated    Residual (Obs.-Est.)  Stand. Residual
+     REPORT_D       REPORT_R
+       Category 1     Category 1        0.967       0.967             0.000            0.002
+       Category 1     Category 2        0.017       0.017             0.000           -0.003
+       Category 2     Category 1        0.015       0.015             0.000           -0.003
+       Category 2     Category 2        0.000       0.000             0.000            0.023
+     REPORT_D       REPORT_S
+       Category 1     Category 1        0.960       0.960             0.000            0.056
+       Category 1     Category 2        0.024       0.025             0.000           -0.071
+       Category 2     Category 1        0.015       0.015             0.000           -0.089
+       Category 2     Category 2        0.001       0.000             0.000            0.553
+     REPORT_D       COUNSELO
+       Category 1     Category 1        0.610       0.606             0.004            0.200
+       Category 1     Category 2        0.374       0.378            -0.004           -0.216
+       Category 2     Category 1        0.007       0.010            -0.003           -0.679
+       Category 2     Category 2        0.009       0.006             0.003            0.944
+     REPORT_D       PSYCH_FT
+       Category 1     Category 1        0.974       0.975            -0.001           -0.087
+       Category 1     Category 2        0.009       0.009             0.000            0.063
+       Category 2     Category 1        0.016       0.016             0.000            0.058
+       Category 2     Category 2        0.000       0.000             0.000            0.030
+     REPORT_D       LAW_FTE
+       Category 1     Category 1        0.984       0.984             0.000           -0.054
+       Category 1     Category 2        0.000       0.000             0.000            0.008
+       Category 2     Category 1        0.016       0.016             0.000            0.054
+       Category 2     Category 2        0.000       0.000             0.000            0.000
+     REPORT_R       REPORT_S
+       Category 1     Category 1        0.958       0.958             0.000            0.012
+       Category 1     Category 2        0.025       0.025             0.000           -0.015
+       Category 2     Category 1        0.017       0.017             0.000           -0.018
+       Category 2     Category 2        0.001       0.000             0.000            0.112
+     REPORT_R       COUNSELO
+       Category 1     Category 1        0.607       0.605             0.003            0.144
+       Category 1     Category 2        0.375       0.378            -0.003           -0.161
+       Category 2     Category 1        0.009       0.011            -0.002           -0.377
+       Category 2     Category 2        0.009       0.007             0.002            0.568
+     REPORT_R       PSYCH_FT
+       Category 1     Category 1        0.972       0.973            -0.001           -0.092
+       Category 1     Category 2        0.009       0.009             0.000            0.067
+       Category 2     Category 1        0.018       0.018             0.000            0.064
+       Category 2     Category 2        0.000       0.000             0.000            0.005
+     REPORT_R       LAW_FTE
+       Category 1     Category 1        0.982       0.982             0.000           -0.057
+       Category 1     Category 2        0.000       0.000             0.000            0.007
+       Category 2     Category 1        0.018       0.018             0.000            0.057
+       Category 2     Category 2        0.000       0.000             0.000            0.000
+     REPORT_S       COUNSELO
+       Category 1     Category 1        0.598       0.600            -0.002           -0.088
+       Category 1     Category 2        0.376       0.375             0.001            0.066
+       Category 2     Category 1        0.018       0.015             0.003            0.602
+       Category 2     Category 2        0.007       0.010            -0.003           -0.650
+     REPORT_S       PSYCH_FT
+       Category 1     Category 1        0.965       0.966            -0.001           -0.100
+       Category 1     Category 2        0.009       0.009             0.000            0.065
+       Category 2     Category 1        0.025       0.025             0.000            0.076
+       Category 2     Category 2        0.000       0.000             0.000            0.014
+     REPORT_S       LAW_FTE
+       Category 1     Category 1        0.974       0.975             0.000           -0.068
+       Category 1     Category 2        0.000       0.000             0.000            0.007
+       Category 2     Category 1        0.026       0.025             0.000            0.068
+       Category 2     Category 2        0.000       0.000             0.000            0.000
+     COUNSELO       PSYCH_FT
+       Category 1     Category 1        0.611       0.610             0.001            0.064
+       Category 1     Category 2        0.006       0.006             0.000           -0.008
+       Category 2     Category 1        0.380       0.381            -0.001           -0.064
+       Category 2     Category 2        0.004       0.004             0.000            0.010
+     COUNSELO       LAW_FTE
+       Category 1     Category 1        0.616       0.616             0.000            0.000
+       Category 1     Category 2        0.000       0.000             0.000            0.004
+       Category 2     Category 1        0.384       0.384             0.000            0.000
+       Category 2     Category 2        0.000       0.000             0.000            0.004
+     PSYCH_FT       LAW_FTE
+       Category 1     Category 1        0.991       0.991             0.000            0.000
+       Category 1     Category 2        0.000       0.000             0.000            0.007
+       Category 2     Category 1        0.009       0.009             0.000            0.000
+       Category 2     Category 2        0.000       0.000             0.000            0.000
 
 
 TECHNICAL 11 OUTPUT
@@ -666,9 +1076,9 @@ The following plots are available:
   Scatterplots (sample values)
   Sample proportions and estimated probabilities
 
-     Beginning Time:  17:39:38
-        Ending Time:  17:40:00
-       Elapsed Time:  00:00:22
+     Beginning Time:  13:57:22
+        Ending Time:  13:57:25
+       Elapsed Time:  00:00:03
 
 
 
@@ -681,4 +1091,4 @@ Fax: (310) 391-8971
 Web: www.StatModel.com
 Support: Support@StatModel.com
 
-Copyright (c) 1998-2022 Muthen & Muthen
+Copyright (c) 1998-2021 Muthen & Muthen
