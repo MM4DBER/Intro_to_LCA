@@ -65,7 +65,7 @@ library(webshot2)
 ```
 
 ### Variable Description
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE}
 tribble(
    ~"Name",      ~"Label",  ~"Values",                                   
 #--------------|--------------------------------|-----|,
@@ -224,7 +224,7 @@ m_template_fit <- mplusModeler(m_template,
 ### Enumeration
 
 This code uses the `mplusObject` function in the `MplusAutomation` package and saves all model runs in the `enum` folder.
-```{r}
+```{r, eval=FALSE}
 
 lca_6  <- lapply(1:6, function(k) {
   lca_enum  <- mplusObject(
@@ -481,7 +481,7 @@ ggsave(here("figures", "C3_bully_LCA_Plot.png"), dpi=300, height=5, width=7, uni
 ### Observed Response Patterns
 
 Save response frequencies for the 3-class model from the previous lab with `response is _____.dat` under `SAVEDATA.`
-```{r}
+```{r, eval=FALSE}
 
 patterns  <- mplusObject(
   
@@ -615,7 +615,7 @@ gtsave(resp_table, here("figures","resp_table.png"))
 ### Classification Diagnostics
 
 Use Mplus to calculate k-class confidence intervals (Note: Change the synax to make your chosen *k*-class model)
-```{r}
+```{r, eval=FALSE}
 classification  <- mplusObject(
   
   TITLE = "C3 LCA - Calculated k-Class 95% CI",
